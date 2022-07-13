@@ -1,9 +1,23 @@
+import { toHslString, toRgbString } from "./string";
+import {
+  instanceOfHSL,
+  instanceOfHSLA,
+  instanceOfRGB,
+  instanceOfRGBA,
+  RGB,
+} from "./types";
+
 export const isHex = (value: string): boolean => {
+  if (typeof value !== "string") return false;
+
   const reg = /^#([0-9a-f]{3}){1,2}$/i;
   return reg.test(value);
 };
 
-export const isRGB = (value: string): boolean => {
+export const isRGB = (value: string | any | RGB): boolean => {
+  if (typeof value !== "string" && instanceOfRGB(value)) return true;
+  if (typeof value !== "string") return false;
+
   const rgbNumbers: number[] = [];
   value
     .replace(/[^\d,]/g, "")
@@ -18,8 +32,29 @@ export const isRGB = (value: string): boolean => {
     !rgbNumbers.some((n) => Math.round(n) !== n)
   );
 };
+export const isRGBA = (value: string | any): boolean => {
+  if (typeof value !== "string" && instanceOfRGBA(value)) return true;
+  if (typeof value !== "string") return false;
+
+  const rgbNumbers: number[] = [];
+  value
+    .replace(/[^\d,]/g, "")
+    .split(",")
+    .forEach((v) => rgbNumbers.push(parseInt(v)));
+
+  return (
+    value.startsWith("rgba(") &&
+    value.endsWith(")") &&
+    rgbNumbers.length == 4 &&
+    !rgbNumbers.some((n) => n > 255 || n < 0) &&
+    !rgbNumbers.some((n) => Math.round(n) !== n)
+  );
+};
 
 export const isHSL = (value: string): boolean => {
+  if (typeof value !== "string" && instanceOfHSL(value)) return true;
+  if (typeof value !== "string") return false;
+
   const hslNumbers: number[] = [];
   value
     .replace(/[^\d,]/g, "")
@@ -30,6 +65,25 @@ export const isHSL = (value: string): boolean => {
     value.startsWith("hsl(") &&
     value.endsWith(")") &&
     hslNumbers.length == 3 &&
+    !hslNumbers.some((n) => n > 100 || n < 0) &&
+    !hslNumbers.some((n) => Math.round(n) !== n)
+  );
+};
+
+export const isHSLA = (value: string): boolean => {
+  if (typeof value !== "string" && instanceOfHSLA(value)) return true;
+  if (typeof value !== "string") return false;
+
+  const hslNumbers: number[] = [];
+  value
+    .replace(/[^\d,]/g, "")
+    .split(",")
+    .forEach((v) => hslNumbers.push(parseInt(v)));
+
+  return (
+    value.startsWith("hsla(") &&
+    value.endsWith(")") &&
+    hslNumbers.length == 4 &&
     !hslNumbers.some((n) => n > 100 || n < 0) &&
     !hslNumbers.some((n) => Math.round(n) !== n)
   );

@@ -1,4 +1,5 @@
-import { RGBA, HSLA, HSL, RGB, HEX } from "./types";
+import { getHue, getLightness, getSaturation, componentToHex } from "./get";
+import { HSL, RGB, HEX } from "./types";
 
 export const hexToRgb = (hex: HEX): RGB => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) || [
@@ -7,48 +8,46 @@ export const hexToRgb = (hex: HEX): RGB => {
     "0",
   ];
   return {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16),
+    r: parseInt(result[1], 16) as RGB["r"],
+    g: parseInt(result[2], 16) as RGB["g"],
+    b: parseInt(result[3], 16) as RGB["b"],
   };
 };
 
 export const hexToHsl = (hex: HEX): HSL => {
-  const rgb:RGB = hexToRgb(hex);
-
-  const r1 = rgb.r / 255;
-  const g1 = rgb.g / 255;
-  const b1 = rgb.b / 255;
-
-  const maxColor = Math.max(r1, g1, b1);
-  const minColor = Math.min(r1, g1, b1);
-  //Calculate L:
-  let L = (maxColor + minColor) / 2;
-  let S = 0;
-  let H = 0;
-  if (maxColor != minColor) {
-    //Calculate S:
-    if (L < 0.5) {
-      S = (maxColor - minColor) / (maxColor + minColor);
-    } else {
-      S = (maxColor - minColor) / (2.0 - maxColor - minColor);
-    }
-    //Calculate H:
-    if (r1 == maxColor) {
-      H = (g1 - b1) / (maxColor - minColor);
-    } else if (g1 == maxColor) {
-      H = 2.0 + (b1 - r1) / (maxColor - minColor);
-    } else {
-      H = 4.0 + (r1 - g1) / (maxColor - minColor);
-    }
-  }
-
-  L = L * 100;
-  S = S * 100;
-  H = H * 60;
-  if (H < 0) {
-    H += 360;
-  }
-
-  return { h: H, s: S, l: L };
+  const rgb: RGB = hexToRgb(hex);
+  return {
+    h: getHue(rgb) as HSL["h"],
+    s: getSaturation(rgb) as HSL["s"],
+    l: getLightness(rgb) as HSL["l"],
+  };
 };
+
+export const hslToRgb = (hsl: HSL): RGB => {
+  let { h, s, l } = hsl;
+  s /= 100;
+  l /= 100;
+  const k = (n: number) => (n + h / 30) % 12;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n: number) =>
+    l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+
+  return {
+    r: Math.round(255 * f(0)) as RGB["r"],
+    g: Math.round(255 * f(8)) as RGB["g"],
+    b: Math.round(255 * f(4)) as RGB["b"],
+  };
+};
+
+export const rgbToHsl = (rgb: RGB): HSL => ({
+  h: getHue(rgb) as HSL["h"],
+  s: getSaturation(rgb) as HSL["s"],
+  l: getLightness(rgb) as HSL["l"],
+});
+
+export const rgbToHex = (rgb: RGB): HEX => {
+  const { r, g, b } = rgb;
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+};
+
+export const hslToHex = (hsl: HSL): HEX => rgbToHex(hslToRgb(hsl));
