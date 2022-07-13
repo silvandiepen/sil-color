@@ -25,6 +25,13 @@ export interface HSLA extends HSL {
 }
 export declare function instanceOfHSL(obj: any): obj is HSL;
 export declare function instanceOfHSLA(obj: any): obj is HSLA;
+export interface CMYK {
+    c: PercentageNumber;
+    m: PercentageNumber;
+    y: PercentageNumber;
+    k: PercentageNumber;
+}
+export declare function instanceOfCMYK(obj: any): obj is CMYK;
 export declare enum ColorType {
     RGB = "rgb",
     RGBA = "rgba",

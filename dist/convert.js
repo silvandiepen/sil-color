@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hslToHex = exports.rgbToHex = exports.rgbToHsl = exports.hslToRgb = exports.hexToHsl = exports.hexToRgb = void 0;
+exports.CmykToRgb = exports.rgbToCmyk = exports.hslToHex = exports.rgbToHex = exports.rgbToHsl = exports.hslToRgb = exports.hexToHsl = exports.hexToRgb = void 0;
 const get_1 = require("./get");
 const hexToRgb = (hex) => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) || [
@@ -51,4 +51,40 @@ const rgbToHex = (rgb) => {
 exports.rgbToHex = rgbToHex;
 const hslToHex = (hsl) => (0, exports.rgbToHex)((0, exports.hslToRgb)(hsl));
 exports.hslToHex = hslToHex;
+const rgbToCmyk = (rgb) => {
+    let { r, g, b } = rgb;
+    let c = 1 - r / 255;
+    let m = 1 - g / 255;
+    let y = 1 - b / 255;
+    let k = Math.min(c, Math.min(m, y));
+    c = (c - k) / (1 - k);
+    m = (m - k) / (1 - k);
+    y = (y - k) / (1 - k);
+    c = Math.round(c * 10000) / 100;
+    m = Math.round(m * 10000) / 100;
+    y = Math.round(y * 10000) / 100;
+    k = Math.round(k * 10000) / 100;
+    c = isNaN(c) ? 0 : c;
+    m = isNaN(m) ? 0 : m;
+    y = isNaN(y) ? 0 : y;
+    k = isNaN(k) ? 0 : k;
+    return {
+        c: c,
+        m: m,
+        y: y,
+        k: k,
+    };
+};
+exports.rgbToCmyk = rgbToCmyk;
+const CmykToRgb = (cmyk) => {
+    const { c, m, y, k } = cmyk;
+    let r = c * (1.0 - k) + k;
+    let g = m * (1.0 - k) + k;
+    let b = y * (1.0 - k) + k;
+    r = Math.round((1.0 - r) * 255 + 0.5);
+    r = Math.round((1.0 - g) * 255 + 0.5);
+    r = Math.round((1.0 - b) * 255 + 0.5);
+    return { r: r, g: g, b: b };
+};
+exports.CmykToRgb = CmykToRgb;
 //# sourceMappingURL=convert.js.map

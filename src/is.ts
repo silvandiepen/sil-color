@@ -4,6 +4,7 @@ import {
   instanceOfHSLA,
   instanceOfRGB,
   instanceOfRGBA,
+  instanceOfCMYK,
   RGB,
 } from "./types";
 
@@ -86,5 +87,25 @@ export const isHSLA = (value: string): boolean => {
     hslNumbers.length == 4 &&
     !hslNumbers.some((n) => n > 100 || n < 0) &&
     !hslNumbers.some((n) => Math.round(n) !== n)
+  );
+};
+
+
+export const isCMYK = (value: string): boolean => {
+  if (typeof value !== "string" && instanceOfCMYK(value)) return true;
+  if (typeof value !== "string") return false;
+
+  const cmykNumbers: number[] = [];
+  value
+    .replace(/[^\d,]/g, "")
+    .split(",")
+    .forEach((v) => cmykNumbers.push(parseInt(v)));
+
+  return (
+    value.startsWith("cmyk(") &&
+    value.endsWith(")") &&
+    cmykNumbers.length == 4 &&
+    !cmykNumbers.some((n) => n > 100 || n < 0) &&
+    !cmykNumbers.some((n) => Math.round(n) !== n)
   );
 };

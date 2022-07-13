@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isHSLA = exports.isHSL = exports.isRGBA = exports.isRGB = exports.isHex = void 0;
+exports.isCMYK = exports.isHSLA = exports.isHSL = exports.isRGBA = exports.isRGB = exports.isHex = void 0;
 const types_1 = require("./types");
 const isHex = (value) => {
     if (typeof value !== "string")
@@ -77,4 +77,21 @@ const isHSLA = (value) => {
         !hslNumbers.some((n) => Math.round(n) !== n));
 };
 exports.isHSLA = isHSLA;
+const isCMYK = (value) => {
+    if (typeof value !== "string" && (0, types_1.instanceOfCMYK)(value))
+        return true;
+    if (typeof value !== "string")
+        return false;
+    const cmykNumbers = [];
+    value
+        .replace(/[^\d,]/g, "")
+        .split(",")
+        .forEach((v) => cmykNumbers.push(parseInt(v)));
+    return (value.startsWith("cmyk(") &&
+        value.endsWith(")") &&
+        cmykNumbers.length == 4 &&
+        !cmykNumbers.some((n) => n > 100 || n < 0) &&
+        !cmykNumbers.some((n) => Math.round(n) !== n));
+};
+exports.isCMYK = isCMYK;
 //# sourceMappingURL=is.js.map

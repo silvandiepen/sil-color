@@ -78,6 +78,32 @@ export function instanceOfHSLA(obj: any): obj is HSLA {
   );
 }
 
+/*
+ * CMYK
+ */
+
+export interface CMYK {
+  c: PercentageNumber;
+  m: PercentageNumber;
+  y: PercentageNumber;  
+  k: PercentageNumber;
+}
+
+export function instanceOfCMYK(obj: any): obj is CMYK {
+  return (
+    "c" in obj &&
+    "m" in obj &&
+    "y" in obj &&
+    "k" in obj &&
+    Object.keys(obj).length == 4
+  );
+}
+
+
+/*
+ * MISC
+ */
+
 export enum ColorType {
   RGB = "rgb",
   RGBA = "rgba",

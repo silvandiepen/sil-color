@@ -36,6 +36,12 @@ const valuesHslToHex = [
     { input: { h: 325, s: 100, l: 50 }, output: "#ff0095" },
     { input: { h: 224, s: 65, l: 80 }, output: "#abbded" },
 ];
+const valuesRgbToCMYK = [
+    { input: { r: 0, g: 0, b: 0 }, output: { c: 0, m: 0, y: 0, k: 100 } },
+    { input: { r: 255, g: 255, b: 255 }, output: { c: 0, m: 0, y: 0, k: 0 } },
+    { input: { r: 255, g: 0, b: 0 }, output: { c: 0, m: 0, y: 0, k: 0 } },
+    { input: { r: 255, g: 0, b: 255 }, output: { c: 0, m: 100, y: 100, k: 0 } },
+];
 describe("convert Hex to RGB", () => {
     valuesHexToRgb.forEach((value) => {
         it(`Should convert a hex value to RGB - ${value.input} → ${JSON.stringify(value.output)}`, () => {
@@ -59,8 +65,15 @@ describe("convert HSL to RGB", () => {
 });
 describe("convert HSL to Hex", () => {
     valuesHslToHex.forEach((value) => {
-        it(`Should convert a hex value to Hex - ${value.output} → ${JSON.stringify(value.input)}`, () => {
+        it(`Should convert a hex value to Hex - ${value.input} → ${JSON.stringify(value.output)}`, () => {
             expect((0, convert_1.hslToHex)(value.input)).toEqual(value.output);
+        });
+    });
+});
+describe("convert RGB to CMYK", () => {
+    valuesRgbToCMYK.forEach((value) => {
+        it(`Should convert a RGB value to CMYK - ${JSON.stringify(value.input)} → ${JSON.stringify(value.output)}`, () => {
+            expect((0, convert_1.rgbToCmyk)(value.input)).toEqual(value.output);
         });
     });
 });

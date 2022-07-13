@@ -1,4 +1,11 @@
-import { hexToHsl, hexToRgb, hslToHex, hslToRgb, rgbToHsl } from "./convert";
+import {
+  hexToHsl,
+  hexToRgb,
+  hslToHex,
+  hslToRgb,
+  rgbToHex,
+  rgbToHsl,
+} from "./convert";
 import { isRGB, isHex, isHSL, isRGBA, isHSLA } from "./is";
 import { HEX, HSL, RGB, ColorType, COLOR, HSLA, RGBA } from "./types";
 
@@ -21,6 +28,18 @@ export const makeItHsl = (value: COLOR): HSL => {
       return hexToHsl(value as HEX);
     default:
       return { h: 0, s: 0, l: 0 };
+  }
+};
+export const makeItRgb = (value: COLOR): RGB => {
+  switch (getType(value)) {
+    case ColorType.RGB:
+      return value as RGB;
+    case ColorType.HSL:
+      return hslToRgb(value as HSL) as RGB;
+    case ColorType.HEX:
+      return hexToRgb(value as HEX) as RGB;
+    default:
+      return { r: 0, g: 0, b: 0 };
   }
 };
 
@@ -78,4 +97,34 @@ export const lighten = (value: RGB | HSL | HEX, amount: number): COLOR => {
 export const darken = (value: RGB | HSL | HEX, amount: number): COLOR => {
   const { l } = makeItHsl(value);
   return setLightness(value, (l / amount) as HSL["l"]);
+};
+
+export const mix = (from: RGB, to: RGB, amount: number): COLOR => {
+  const type = getType(from);
+
+  const fromRgb = makeItRgb(from);
+  const endRgb = makeItRgb(to);
+
+  const delta = {
+    r: ((endRgb.r - fromRgb.r) / 100) * amount,
+    g: ((endRgb.g - fromRgb.g) / 100) * amount,
+    b: ((endRgb.b - fromRgb.b) / 100) * amount,
+  };
+
+  const result: RGB = {
+    r: Math.round(fromRgb.r + delta.r) as RGB["r"],
+    g: Math.round(fromRgb.g + delta.g) as RGB["g"],
+    b: Math.round(fromRgb.b + delta.b) as RGB["b"],
+  };
+
+  switch (type) {
+    case ColorType.RGB:
+      return result;
+    case ColorType.HSL:
+      return rgbToHsl(result) as HSL;
+    case ColorType.HEX:
+      return rgbToHex(result) as HEX;
+    default:
+      return result;
+  }
 };
