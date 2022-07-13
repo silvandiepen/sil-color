@@ -18,4 +18,5 @@ __exportStar(require("./convert"), exports);
 __exportStar(require("./is"), exports);
 __exportStar(require("./get"), exports);
 __exportStar(require("./string"), exports);
+__exportStar(require("./manipulate"), exports);
 //# sourceMappingURL=index.js.map
