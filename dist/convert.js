@@ -60,10 +60,10 @@ const rgbToCmyk = (rgb) => {
     c = (c - k) / (1 - k);
     m = (m - k) / (1 - k);
     y = (y - k) / (1 - k);
-    c = Math.round(c * 10000) / 100;
-    m = Math.round(m * 10000) / 100;
-    y = Math.round(y * 10000) / 100;
-    k = Math.round(k * 10000) / 100;
+    c = Math.round(c * 100);
+    m = Math.round(m * 100);
+    y = Math.round(y * 100);
+    k = Math.round(k * 100);
     c = isNaN(c) ? 0 : c;
     m = isNaN(m) ? 0 : m;
     y = isNaN(y) ? 0 : y;
@@ -77,13 +77,13 @@ const rgbToCmyk = (rgb) => {
 };
 exports.rgbToCmyk = rgbToCmyk;
 const CmykToRgb = (cmyk) => {
-    const { c, m, y, k } = cmyk;
-    let r = c * (1.0 - k) + k;
-    let g = m * (1.0 - k) + k;
-    let b = y * (1.0 - k) + k;
-    r = Math.round((1.0 - r) * 255 + 0.5);
-    r = Math.round((1.0 - g) * 255 + 0.5);
-    r = Math.round((1.0 - b) * 255 + 0.5);
+    const k = cmyk.k / 100;
+    const c = (cmyk.c / 100) * (1 - k) + k;
+    const m = (cmyk.m / 100) * (1 - k) + k;
+    const y = (cmyk.y / 100) * (1 - k) + k;
+    const r = Math.round(255 * (1 - c));
+    const g = Math.round(255 * (1 - m));
+    const b = Math.round(255 * (1 - y));
     return { r: r, g: g, b: b };
 };
 exports.CmykToRgb = CmykToRgb;

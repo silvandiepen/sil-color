@@ -39,8 +39,20 @@ const valuesHslToHex = [
 const valuesRgbToCMYK = [
     { input: { r: 0, g: 0, b: 0 }, output: { c: 0, m: 0, y: 0, k: 100 } },
     { input: { r: 255, g: 255, b: 255 }, output: { c: 0, m: 0, y: 0, k: 0 } },
-    { input: { r: 255, g: 0, b: 0 }, output: { c: 0, m: 0, y: 0, k: 0 } },
-    { input: { r: 255, g: 0, b: 255 }, output: { c: 0, m: 100, y: 100, k: 0 } },
+    { input: { r: 255, g: 0, b: 0 }, output: { c: 0, m: 100, y: 100, k: 0 } },
+    { input: { r: 255, g: 0, b: 255 }, output: { c: 0, m: 100, y: 0, k: 0 } },
+    { input: { r: 127, g: 127, b: 127 }, output: { c: 0, m: 0, y: 0, k: 50 } },
+    { input: { r: 204, g: 204, b: 204 }, output: { c: 0, m: 0, y: 0, k: 20 } },
+    { input: { r: 123, g: 242, b: 34 }, output: { c: 49, m: 0, y: 86, k: 5 } },
+];
+const valuesCMYKToRGB = [
+    { output: { r: 0, g: 0, b: 0 }, input: { c: 0, m: 0, y: 0, k: 100 } },
+    { output: { r: 255, g: 255, b: 255 }, input: { c: 0, m: 0, y: 0, k: 0 } },
+    { output: { r: 255, g: 0, b: 0 }, input: { c: 0, m: 100, y: 100, k: 0 } },
+    { output: { r: 255, g: 0, b: 255 }, input: { c: 0, m: 100, y: 0, k: 0 } },
+    { output: { r: 128, g: 128, b: 128 }, input: { c: 0, m: 0, y: 0, k: 50 } },
+    { output: { r: 204, g: 204, b: 204 }, input: { c: 0, m: 0, y: 0, k: 20 } },
+    { output: { r: 124, g: 242, b: 34 }, input: { c: 49, m: 0, y: 86, k: 5 } },
 ];
 describe("convert Hex to RGB", () => {
     valuesHexToRgb.forEach((value) => {
@@ -74,6 +86,13 @@ describe("convert RGB to CMYK", () => {
     valuesRgbToCMYK.forEach((value) => {
         it(`Should convert a RGB value to CMYK - ${JSON.stringify(value.input)} → ${JSON.stringify(value.output)}`, () => {
             expect((0, convert_1.rgbToCmyk)(value.input)).toEqual(value.output);
+        });
+    });
+});
+describe("convert CMYK to RGB", () => {
+    valuesCMYKToRGB.forEach((value) => {
+        it(`Should convert a RGB value to CMYK - ${JSON.stringify(value.input)} → ${JSON.stringify(value.output)}`, () => {
+            expect((0, convert_1.CmykToRgb)(value.input)).toEqual(value.output);
         });
     });
 });
