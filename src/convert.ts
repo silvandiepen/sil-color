@@ -1,5 +1,21 @@
+import { setFlagsFromString } from "v8";
 import { getHue, getLightness, getSaturation, componentToHex } from "./get";
-import { HSL, RGB, HEX, CMYK } from "./types";
+import { isCMYK, isHex, isHSL, isRGB } from "./is";
+import { toCmykObject, toHslObject, toRgbObject } from "./object";
+import {
+  HSL,
+  RGB,
+  HEX,
+  CMYK,
+  COLOR,
+  instanceOfRGB,
+  instanceOfCMYK,
+  instanceOfHSL,
+  instanceOfHSLA,
+  HSLA,
+  instanceOfRGBA,
+  RGBA,
+} from "./types";
 
 export const hexToRgb = (hex: HEX): RGB => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) || [
@@ -23,7 +39,7 @@ export const hexToHsl = (hex: HEX): HSL => {
   };
 };
 
-export const hslToRgb = (hsl: HSL): RGB => {
+export const hslToRgb = (hsl: HSL | HSLA): RGB | RGBA => {
   let { h, s, l } = hsl;
   s /= 100;
   l /= 100;
@@ -32,25 +48,39 @@ export const hslToRgb = (hsl: HSL): RGB => {
   const f = (n: number) =>
     l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
 
-  return {
+  const rgb = {
     r: Math.round(255 * f(0)) as RGB["r"],
     g: Math.round(255 * f(8)) as RGB["g"],
     b: Math.round(255 * f(4)) as RGB["b"],
   };
+
+  if (instanceOfHSL(hsl)) {
+    return rgb;
+  } else {
+    return { ...rgb, a: (hsl as HSLA).a };
+  }
 };
 
-export const rgbToHsl = (rgb: RGB): HSL => ({
-  h: getHue(rgb) as HSL["h"],
-  s: getSaturation(rgb) as HSL["s"],
-  l: getLightness(rgb) as HSL["l"],
-});
+export const rgbToHsl = (rgb: RGB | RGBA): HSL | HSLA => {
+  const hsl = {
+    h: getHue(rgb) as HSL["h"],
+    s: getSaturation(rgb) as HSL["s"],
+    l: getLightness(rgb) as HSL["l"],
+  };
 
-export const rgbToHex = (rgb: RGB): HEX => {
+  if (instanceOfRGB(rgb)) {
+    return hsl;
+  } else {
+    return { ...hsl, a: (rgb as RGBA).a };
+  }
+};
+
+export const rgbToHex = (rgb: RGB | RGBA): HEX => {
   const { r, g, b } = rgb;
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 };
 
-export const hslToHex = (hsl: HSL): HEX => rgbToHex(hslToRgb(hsl));
+export const hslToHex = (hsl: HSL | HSLA): HEX => rgbToHex(hslToRgb(hsl));
 
 export const rgbToCmyk = (rgb: RGB): CMYK => {
   let { r, g, b } = rgb;
@@ -75,38 +105,45 @@ export const rgbToCmyk = (rgb: RGB): CMYK => {
   y = isNaN(y) ? 0 : y;
   k = isNaN(k) ? 0 : k;
 
-  // let c = 255 - rgb.r;
-  // let m = 255 - rgb.g;
-  // let y = 255 - rgb.b;
-  // let k = Math.min(c, m, y);
-  // c = (c - k) / 255 - k;
-  // m = (m - k) / 255 - k;
-  // y = (y - k) / 255 - k;
-
-  return {
+  const cmyk = {
     c: c as CMYK["c"],
     m: m as CMYK["m"],
     y: y as CMYK["y"],
     k: k as CMYK["k"],
   };
+  return cmyk;
 };
 
-export const CmykToRgb = (cmyk: CMYK): RGB => {
+export const cmykToRgb = (cmyk: CMYK): RGB => {
+  const k = cmyk.k / 100;
 
-
-const  k = cmyk.k / 100;
-
-const c = (cmyk.c / 100)* (1 - k) + k;
-const m = (cmyk.m / 100)* (1 - k) + k;
-const y = (cmyk.y / 100)* (1 - k) + k;
-
-
+  const c = (cmyk.c / 100) * (1 - k) + k;
+  const m = (cmyk.m / 100) * (1 - k) + k;
+  const y = (cmyk.y / 100) * (1 - k) + k;
 
   const r = Math.round(255 * (1 - c));
   const g = Math.round(255 * (1 - m));
   const b = Math.round(255 * (1 - y));
 
-  return { r: r as RGB["r"], g: g as RGB["g"], b: b as RGB["b"] };
+  const rgb = { r: r as RGB["r"], g: g as RGB["g"], b: b as RGB["b"] };
+
+  return rgb;
 };
 
-// export const hslToCmyk =
+export const cmykToHex = (cmyk: CMYK): HEX => rgbToHex(cmykToRgb(cmyk));
+
+export const toHex = (color: COLOR): HEX => {
+  if (typeof color == "string") {
+    if (isHex(color as string)) return color as HEX;
+    if (isRGB(color as string)) return rgbToHex(toRgbObject(color));
+    if (isHSL(color as string)) return hslToHex(toHslObject(color));
+    if (isCMYK(color as string)) return cmykToHex(toCmykObject(color));
+  } else if (instanceOfRGB(color) || instanceOfRGBA(color)) {
+    return rgbToHex(color);
+  } else if (instanceOfHSL(color) || instanceOfHSLA(color)) {
+    return hslToHex(color);
+  } else if (instanceOfCMYK(color)) {
+    return cmykToHex(color);
+  }
+  return "#000000";
+};

@@ -3,10 +3,11 @@ import {
   hexToHsl,
   hslToHex,
   hslToRgb,
+  rgbToHsl,
   rgbToCmyk,
-  CmykToRgb,
+  cmykToRgb,
 } from "./convert";
-import { CMYK, HEX, HSL, RGB } from "./types";
+import { CMYK, HEX, HSL, HSLA, RGB, RGBA } from "./types";
 
 const valuesHexToRgb: { input: HEX; output: RGB }[] = [
   { input: "#000000", output: { r: 0, g: 0, b: 0 } },
@@ -27,7 +28,7 @@ const valuesHexToHsl: { input: HEX; output: HSL }[] = [
   { input: "#aabced", output: { h: 224, s: 65, l: 80 } },
 ];
 
-const valuesHslToRgb: { input: HSL; output: RGB }[] = [
+const valuesHslToRgb: { input: HSL | HSLA; output: RGB | RGBA }[] = [
   { input: { h: 0, s: 0, l: 0 }, output: { r: 0, g: 0, b: 0 } },
   { input: { h: 0, s: 0, l: 100 }, output: { r: 255, g: 255, b: 255 } },
   { input: { h: 0, s: 100, l: 50 }, output: { r: 255, g: 0, b: 0 } },
@@ -35,6 +36,23 @@ const valuesHslToRgb: { input: HSL; output: RGB }[] = [
   { input: { h: 0, s: 0, l: 80 }, output: { r: 204, g: 204, b: 204 } },
   { input: { h: 325, s: 100, l: 50 }, output: { r: 255, g: 0, b: 149 } },
   { input: { h: 224, s: 65, l: 80 }, output: { r: 171, g: 189, b: 237 } },
+  {
+    input: { h: 224, s: 65, l: 80, a: 0.5 },
+    output: { r: 171, g: 189, b: 237, a: 0.5 },
+  },
+];
+const valuesRgbToHsl: { output: HSL | HSLA; input: RGB | RGBA }[] = [
+  { output: { h: 0, s: 0, l: 0 }, input: { r: 0, g: 0, b: 0 } },
+  { output: { h: 0, s: 0, l: 100 }, input: { r: 255, g: 255, b: 255 } },
+  { output: { h: 0, s: 100, l: 50 }, input: { r: 255, g: 0, b: 0 } },
+  { output: { h: 0, s: 0, l: 50 }, input: { r: 128, g: 128, b: 128 } },
+  { output: { h: 0, s: 0, l: 80 }, input: { r: 204, g: 204, b: 204 } },
+  { output: { h: 325, s: 100, l: 50 }, input: { r: 255, g: 0, b: 149 } },
+  { output: { h: 224, s: 65, l: 80 }, input: { r: 171, g: 189, b: 237 } },
+  {
+    output: { h: 224, s: 65, l: 80, a: 0.5 },
+    input: { r: 171, g: 189, b: 237, a: 0.5 },
+  },
 ];
 
 const valuesHslToHex: { input: HSL; output: HEX }[] = [
@@ -95,6 +113,15 @@ describe("convert HSL to RGB", () => {
     });
   });
 });
+describe("convert RGB to HSL", () => {
+  valuesRgbToHsl.forEach((value) => {
+    it(`Should convert a RGB value to HSL - ${JSON.stringify(
+      value.input
+    )} → ${JSON.stringify(value.output)}`, () => {
+      expect(rgbToHsl(value.input)).toEqual(value.output);
+    });
+  });
+});
 
 describe("convert HSL to Hex", () => {
   valuesHslToHex.forEach((value) => {
@@ -121,7 +148,7 @@ describe("convert CMYK to RGB", () => {
     it(`Should convert a RGB value to CMYK - ${JSON.stringify(
       value.input
     )} → ${JSON.stringify(value.output)}`, () => {
-      expect(CmykToRgb(value.input)).toEqual(value.output);
+      expect(cmykToRgb(value.input)).toEqual(value.output);
     });
   });
 });
