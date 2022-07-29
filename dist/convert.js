@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.toHex = exports.cmykToHex = exports.cmykToRgb = exports.rgbToCmyk = exports.hslToHex = exports.rgbToHex = exports.rgbToHsl = exports.hslToRgb = exports.hexToHsl = exports.hexToRgb = void 0;
+exports.toCMYK = exports.toHSL = exports.toRGB = exports.toHex = exports.hexToCmyk = exports.cmykToHsl = exports.cmykToHex = exports.hslToCmyk = exports.hslToHex = exports.cmykToRgb = exports.rgbToCmyk = exports.rgbToHex = exports.rgbToHsl = exports.hslToRgb = exports.hexToHsl = exports.hexToRgb = void 0;
 const get_1 = require("./get");
 const is_1 = require("./is");
 const object_1 = require("./object");
@@ -66,8 +66,6 @@ const rgbToHex = (rgb) => {
     return "#" + (0, get_1.componentToHex)(r) + (0, get_1.componentToHex)(g) + (0, get_1.componentToHex)(b);
 };
 exports.rgbToHex = rgbToHex;
-const hslToHex = (hsl) => (0, exports.rgbToHex)((0, exports.hslToRgb)(hsl));
-exports.hslToHex = hslToHex;
 const rgbToCmyk = (rgb) => {
     let { r, g, b } = rgb;
     let c = 1 - r / 255;
@@ -106,8 +104,16 @@ const cmykToRgb = (cmyk) => {
     return rgb;
 };
 exports.cmykToRgb = cmykToRgb;
-const cmykToHex = (cmyk) => (0, exports.rgbToHex)((0, exports.cmykToRgb)(cmyk));
+const hslToHex = (color) => (0, exports.rgbToHex)((0, exports.hslToRgb)(color));
+exports.hslToHex = hslToHex;
+const hslToCmyk = (color) => (0, exports.rgbToCmyk)((0, exports.hslToRgb)(color));
+exports.hslToCmyk = hslToCmyk;
+const cmykToHex = (color) => (0, exports.rgbToHex)((0, exports.cmykToRgb)(color));
 exports.cmykToHex = cmykToHex;
+const cmykToHsl = (color) => (0, exports.rgbToHsl)((0, exports.cmykToRgb)(color));
+exports.cmykToHsl = cmykToHsl;
+const hexToCmyk = (color) => (0, exports.rgbToCmyk)((0, exports.hexToRgb)(color));
+exports.hexToCmyk = hexToCmyk;
 const toHex = (color) => {
     if (typeof color == "string") {
         if ((0, is_1.isHex)(color))
@@ -131,4 +137,83 @@ const toHex = (color) => {
     return "#000000";
 };
 exports.toHex = toHex;
+const toRGB = (color) => {
+    if (typeof color == "string") {
+        if ((0, is_1.isHex)(color))
+            return (0, exports.hexToRgb)(color);
+        if ((0, is_1.isRGB)(color))
+            return (0, object_1.toRgbObject)(color);
+        if ((0, is_1.isHSL)(color))
+            return (0, exports.hslToRgb)((0, object_1.toHslObject)(color));
+        if ((0, is_1.isCMYK)(color))
+            return (0, exports.cmykToRgb)((0, object_1.toCmykObject)(color));
+    }
+    else if ((0, types_1.instanceOfRGB)(color) || (0, types_1.instanceOfRGBA)(color)) {
+        return color.a && color.a > -1
+            ? color
+            : color;
+    }
+    else if ((0, types_1.instanceOfHSL)(color) || (0, types_1.instanceOfHSLA)(color)) {
+        return (0, exports.hslToRgb)(color);
+    }
+    else if ((0, types_1.instanceOfCMYK)(color)) {
+        return (0, exports.cmykToRgb)(color);
+    }
+    return { r: 0, g: 0, b: 0 };
+};
+exports.toRGB = toRGB;
+const toHSL = (color) => {
+    if (typeof color == "string") {
+        if ((0, is_1.isHex)(color))
+            return (0, exports.hexToHsl)(color);
+        if ((0, is_1.isRGB)(color))
+            return (0, exports.rgbToHsl)((0, object_1.toRgbObject)(color));
+        if ((0, is_1.isHSL)(color))
+            return (0, object_1.toHslObject)(color);
+        if ((0, is_1.isCMYK)(color))
+            return (0, exports.cmykToHsl)((0, object_1.toCmykObject)(color));
+    }
+    else if ((0, types_1.instanceOfHSL)(color) || (0, types_1.instanceOfRGBA)(color)) {
+        return color.a && color.a > -1
+            ? color
+            : color;
+    }
+    else if ((0, types_1.instanceOfRGBA)(color) || (0, types_1.instanceOfRGBA)(color)) {
+        return (0, exports.rgbToHsl)(color);
+    }
+    else if ((0, types_1.instanceOfCMYK)(color)) {
+        return (0, exports.cmykToHsl)(color);
+    }
+    return { h: 0, s: 0, l: 0 };
+};
+exports.toHSL = toHSL;
+const toCMYK = (color) => {
+    if (typeof color == "string") {
+        if ((0, is_1.isHex)(color))
+            return (0, exports.hexToCmyk)(color);
+        if ((0, is_1.isRGB)(color))
+            return (0, exports.rgbToCmyk)((0, object_1.toRgbObject)(color));
+        if ((0, is_1.isHSL)(color))
+            return (0, exports.hslToCmyk)((0, object_1.toHslObject)(color));
+        if ((0, is_1.isCMYK)(color))
+            return (0, object_1.toCmykObject)(color);
+    }
+    else if ((0, types_1.instanceOfHSL)(color)) {
+        return (0, exports.hslToCmyk)(color);
+    }
+    else if ((0, types_1.instanceOfHSLA)(color)) {
+        return (0, exports.hslToCmyk)(color);
+    }
+    else if ((0, types_1.instanceOfRGB)(color)) {
+        return (0, exports.rgbToCmyk)(color);
+    }
+    else if ((0, types_1.instanceOfRGBA)(color)) {
+        return (0, exports.rgbToCmyk)(color);
+    }
+    else if ((0, types_1.instanceOfCMYK)(color)) {
+        return color;
+    }
+    return { c: 0, m: 0, y: 0, k: 0 };
+};
+exports.toCMYK = toCMYK;
 //# sourceMappingURL=convert.js.map

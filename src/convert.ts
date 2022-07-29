@@ -1,4 +1,3 @@
-import { setFlagsFromString } from "v8";
 import { getHue, getLightness, getSaturation, componentToHex } from "./get";
 import { isCMYK, isHex, isHSL, isRGB } from "./is";
 import { toCmykObject, toHslObject, toRgbObject } from "./object";
@@ -80,8 +79,6 @@ export const rgbToHex = (rgb: RGB | RGBA): HEX => {
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 };
 
-export const hslToHex = (hsl: HSL | HSLA): HEX => rgbToHex(hslToRgb(hsl));
-
 export const rgbToCmyk = (rgb: RGB): CMYK => {
   let { r, g, b } = rgb;
   let c = 1 - r / 255;
@@ -130,7 +127,12 @@ export const cmykToRgb = (cmyk: CMYK): RGB => {
   return rgb;
 };
 
-export const cmykToHex = (cmyk: CMYK): HEX => rgbToHex(cmykToRgb(cmyk));
+export const hslToHex = (color: HSL | HSLA): HEX => rgbToHex(hslToRgb(color));
+export const hslToCmyk = (color: HSL | HSLA): CMYK =>
+  rgbToCmyk(hslToRgb(color));
+export const cmykToHex = (color: CMYK): HEX => rgbToHex(cmykToRgb(color));
+export const cmykToHsl = (color: CMYK): HSL => rgbToHsl(cmykToRgb(color));
+export const hexToCmyk = (color: HEX): CMYK => rgbToCmyk(hexToRgb(color));
 
 export const toHex = (color: COLOR): HEX => {
   if (typeof color == "string") {
@@ -146,4 +148,60 @@ export const toHex = (color: COLOR): HEX => {
     return cmykToHex(color);
   }
   return "#000000";
+};
+
+export const toRGB = (color: COLOR): RGB | RGBA => {
+  if (typeof color == "string") {
+    if (isHex(color as string)) return hexToRgb(color);
+    if (isRGB(color as string)) return toRgbObject(color);
+    if (isHSL(color as string)) return hslToRgb(toHslObject(color));
+    if (isCMYK(color as string)) return cmykToRgb(toCmykObject(color));
+  } else if (instanceOfRGB(color) || instanceOfRGBA(color)) {
+    return (color as RGBA).a && (color as RGBA).a > -1
+      ? (color as RGBA)
+      : (color as RGB);
+  } else if (instanceOfHSL(color) || instanceOfHSLA(color)) {
+    return hslToRgb(color);
+  } else if (instanceOfCMYK(color)) {
+    return cmykToRgb(color);
+  }
+  return { r: 0, g: 0, b: 0 };
+};
+
+export const toHSL = (color: COLOR): HSL | HSLA => {
+  if (typeof color == "string") {
+    if (isHex(color as string)) return hexToHsl(color);
+    if (isRGB(color as string)) return rgbToHsl(toRgbObject(color));
+    if (isHSL(color as string)) return toHslObject(color);
+    if (isCMYK(color as string)) return cmykToHsl(toCmykObject(color));
+  } else if (instanceOfHSL(color) || instanceOfRGBA(color)) {
+    return (color as HSLA).a && (color as HSLA).a > -1
+      ? (color as HSLA)
+      : (color as HSL);
+  } else if (instanceOfRGBA(color) || instanceOfRGBA(color)) {
+    return rgbToHsl(color);
+  } else if (instanceOfCMYK(color)) {
+    return cmykToHsl(color);
+  }
+  return { h: 0, s: 0, l: 0 };
+};
+
+export const toCMYK = (color: COLOR): CMYK => {
+  if (typeof color == "string") {
+    if (isHex(color as string)) return hexToCmyk(color);
+    if (isRGB(color as string)) return rgbToCmyk(toRgbObject(color));
+    if (isHSL(color as string)) return hslToCmyk(toHslObject(color));
+    if (isCMYK(color as string)) return toCmykObject(color);
+  } else if (instanceOfHSL(color)) {
+    return hslToCmyk(color as HSL);
+  } else if (instanceOfHSLA(color)) {
+    return hslToCmyk(color as HSLA);
+  } else if (instanceOfRGB(color)) {
+    return rgbToCmyk(color as RGB);
+  } else if (instanceOfRGBA(color)) {
+    return rgbToCmyk(color as RGBA);
+  } else if (instanceOfCMYK(color)) {
+    return color;
+  }
+  return { c: 0, m: 0, y: 0, k: 0 };
 };

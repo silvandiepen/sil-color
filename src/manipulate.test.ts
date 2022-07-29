@@ -1,5 +1,5 @@
-import { lighten, darken, setLightness } from "./manipulate";
-import { HEX, HSL, RGB } from "./types";
+import { lighten, darken, setLightness, mix } from "./manipulate";
+import { COLOR, HEX, HSL, RGB } from "./types";
 
 const lightenColors = [
   {
@@ -105,3 +105,51 @@ describe("Set Lightened color", () => {
     });
   });
 });
+
+
+const mixTest: {
+  input1: RGB;  
+  input2: RGB;
+  amount: HSL["l"];
+  output: COLOR
+}[] = [
+  {
+    input1: { r: 0, g: 0, b: 0 } as RGB,
+    input2: { r: 255, g: 255, b: 255 } as RGB,
+    amount: 50,
+    output: { r: 127, g: 127, b: 127 } as RGB,
+  },
+  {
+    input1: { r: 0, g: 0, b: 0 } as RGB,
+    input2: { r: 255, g: 255, b: 255 } as RGB,
+    amount: 25,
+    output: { r: 64, g: 64, b: 64 } as RGB,
+  },
+  {
+    input1: { r: 0, g: 0, b: 0 } as RGB,
+    input2: { r: 255, g: 255, b: 255 } as RGB,
+    amount: 75,
+    output: { r: 191, g: 191, b: 191 } as RGB,
+  },
+  {
+    input1: { r: 255, g: 255, b: 255 } as RGB,
+    input2: { r: 0, g: 0, b: 0 } as RGB,
+    amount: 25,
+    output: { r: 191, g: 191, b: 191 } as RGB,
+  },
+  {
+    input1: { r: 255, g: 255, b: 255 } as RGB,
+    input2: { r: 0, g: 0, b: 0 } as RGB,
+    amount: 75,
+    output: { r: 64, g: 64, b: 64 } as RGB,
+  },
+];
+
+describe("Mix color", () => {
+  mixTest.forEach((value) => {
+    it(`should mix the two colors the set amount`, () => {
+      expect(mix(value.input1, value.input2, value.amount)).toEqual(value.output);
+    });
+  });
+});
+

@@ -1,11 +1,12 @@
 import {
+  getBrightness,
   getHueFromRgb,
   getLightnessFromRgb,
   getMinMaxRgb,
   getSaturation,
   getSaturationFromRgb,
 } from "./get";
-import { HSL, RGB, MinMax } from "./types";
+import { HSL, RGB, MinMax, COLOR } from "./types";
 
 const MinMaxTests: { input: RGB; output: MinMax }[] = [
   { input: { r: 0, g: 0, b: 0 }, output: { r: 0, g: 0, b: 0, min: 0, max: 0 } },
@@ -152,3 +153,50 @@ describe("Get the hue of an RGB value", () => {
 //     });
 //   });
 // });
+const getBrightnessTests: {
+  input: COLOR;
+  roundness?: number;
+  output: number;
+}[] = [
+  { input: { r: 0, g: 0, b: 0 }, output: 0 },
+  {
+    input: { r: 255, g: 255, b: 255 },
+    output: 100,
+  },
+  {
+    input: { r: 255, g: 0, b: 0 },
+    output: 54.68,
+  },
+  {
+    input: { r: 0, g: 255, b: 0 },
+    output: 76.62,
+  },
+  {
+    input: { r: 0, g: 0, b: 255 },
+    output: 33.76,
+  },
+  {
+    input: { r: 0, g: 255, b: 255 },
+    roundness: 1000,
+    output: 83.726,
+  },
+  {
+    input: { r: 255, g: 255, b: 0 },
+    roundness: 1,
+    output: 94,
+  },
+];
+
+describe("Get the Brightness of a color", () => {
+  getBrightnessTests.forEach((value) => {
+    it("Should give the value", () => {
+      if (value.roundness) {
+        expect(getBrightness(value.input, value.roundness)).toEqual(
+          value.output
+        );
+      } else {
+        expect(getBrightness(value.input)).toEqual(value.output);
+      }
+    });
+  });
+});

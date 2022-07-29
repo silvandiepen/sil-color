@@ -98,4 +98,19 @@ describe("Set Lightened color", () => {
         });
     });
 });
+const mixTest = [
+    {
+        input1: { r: 0, g: 0, b: 0 },
+        input2: { r: 255, g: 255, b: 255 },
+        amount: 25,
+        output: { r: 64, g: 64, b: 64 },
+    },
+];
+describe("Mix color", () => {
+    mixTest.forEach((value) => {
+        it(`should mix the two colors the set amount`, () => {
+            expect((0, manipulate_1.mix)(value.input1, value.input2, value.amount)).toEqual(value.output);
+        });
+    });
+});
 //# sourceMappingURL=manipulate.test.js.map

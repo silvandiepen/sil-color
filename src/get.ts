@@ -1,6 +1,7 @@
-import { hexToHsl, hexToRgb, hslToRgb } from "./convert";
+import { hexToHsl, hexToRgb, hslToRgb, toRGB } from "./convert";
 import { getType } from "./manipulate";
-import { COLOR, ColorType, HSL, HSLA, RGB, RGBA, HEX,MinMax } from "./types";
+import { toRgbObject } from "./object";
+import { COLOR, ColorType, HSL, HSLA, RGB, RGBA, HEX, MinMax } from "./types";
 
 export const getMinMaxRgb = (rgb: RGB): MinMax => {
   let { r, g, b } = rgb;
@@ -191,4 +192,13 @@ export const getBlue = (value: COLOR): number => {
       console.warn(`${getType(value)} is not supported yet by getRed`);
       return 0;
   }
+};
+
+// http://alienryderflex.com/hsp.html
+export const getBrightness = (value: COLOR, round = 100): number => {
+  const { r, g, b } = toRGB(value);
+
+  const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+
+  return Math.round(((hsp / 255) * 100) * round) / round;
 };
