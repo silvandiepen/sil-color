@@ -143,7 +143,7 @@ export const toType = (color: COLOR, type: ColorType) => {
       return toHex(color);
     case ColorType.RGB:
     case ColorType.RGBA:
-      return toHSL(color);
+      return toRGB(color);
 
     case ColorType.HSL:
     case ColorType.HSLA:

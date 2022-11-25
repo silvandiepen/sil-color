@@ -21,13 +21,12 @@ export const setLightness = (value: COLOR, lightness: HSL["l"]): COLOR => {
     s: s,
     l: lightness,
   };
-
+  
   return toType(hsl, type);
 };
 
 export const setOpacity = (value: COLOR, alpha: HSLA["a"]): COLOR => {
   let type = getType(value);
-
   let color: COLOR = { ...toRGB(value), a: alpha };
 
   switch (type) {
