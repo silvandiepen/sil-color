@@ -1,28 +1,23 @@
-import { setFlagsFromString } from "v8";
 import { getHue, getLightness, getSaturation, componentToHex } from "./get";
-import { isCMYK, isHex, isHSL, isRGB } from "./is";
-import { toCmykObject, toHslObject, toRgbObject } from "./object";
-import {
-  HSL,
-  RGB,
-  HEX,
-  CMYK,
-  COLOR,
-  instanceOfRGB,
-  instanceOfCMYK,
-  instanceOfHSL,
-  instanceOfHSLA,
-  HSLA,
-  instanceOfRGBA,
-  RGBA,
-} from "./types";
+import type { HSL, RGB, HEX, CMYK, HSLA, RGBA, HSV, HSVA } from "./types";
+import { instanceOfRGB, instanceOfHSL } from "./types";
+
+export const defaultValues: {
+  hex: HEX;
+  rgb: RGB;
+  hsl: HSL;
+  hsv: HSV;
+  cmyk: CMYK;
+} = {
+  hex: "#000000",
+  rgb: { r: 0, g: 0, b: 0 },
+  hsl: { h: 0, s: 0, l: 0 },
+  hsv: { h: 0, s: 0, v: 0 },
+  cmyk: { c: 0, m: 0, y: 0, k: 100 },
+};
 
 export const hexToRgb = (hex: HEX): RGB => {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) || [
-    "0",
-    "0",
-    "0",
-  ];
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) || Object.values(defaultValues.rgb);
   return {
     r: parseInt(result[1], 16) as RGB["r"],
     g: parseInt(result[2], 16) as RGB["g"],
@@ -80,9 +75,7 @@ export const rgbToHex = (rgb: RGB | RGBA): HEX => {
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 };
 
-export const hslToHex = (hsl: HSL | HSLA): HEX => rgbToHex(hslToRgb(hsl));
-
-export const rgbToCmyk = (rgb: RGB): CMYK => {
+export const rgbToCmyk = (rgb: RGB | RGBA): CMYK => {
   let { r, g, b } = rgb;
   let c = 1 - r / 255;
   let m = 1 - g / 255;
@@ -129,21 +122,153 @@ export const cmykToRgb = (cmyk: CMYK): RGB => {
 
   return rgb;
 };
+export const rgbToHsv = (rgb: RGB | RGBA): HSV | HSVA => {
+  const { r, g, b } = rgb;
 
-export const cmykToHex = (cmyk: CMYK): HEX => rgbToHex(cmykToRgb(cmyk));
+  let h = 0,
+    s = 0,
+    v = 0;
 
-export const toHex = (color: COLOR): HEX => {
-  if (typeof color == "string") {
-    if (isHex(color as string)) return color as HEX;
-    if (isRGB(color as string)) return rgbToHex(toRgbObject(color));
-    if (isHSL(color as string)) return hslToHex(toHslObject(color));
-    if (isCMYK(color as string)) return cmykToHex(toCmykObject(color));
-  } else if (instanceOfRGB(color) || instanceOfRGBA(color)) {
-    return rgbToHex(color);
-  } else if (instanceOfHSL(color) || instanceOfHSLA(color)) {
-    return hslToHex(color);
-  } else if (instanceOfCMYK(color)) {
-    return cmykToHex(color);
+  const rAbs = r / 255;
+  const gAbs = g / 255;
+  const bAbs = b / 255;
+
+  v = Math.max(rAbs, gAbs, bAbs);
+  const diff = v - Math.min(rAbs, gAbs, bAbs);
+
+  const diffc = (c: number) => (v - c) / 6 / diff + 1 / 2;
+  const percentRoundFn = (num: number) => (Math.round(num * 100) / 100) * 100;
+
+  if (diff == 0) {
+    h = s = 0;
+  } else {
+    s = diff / v;
+    const rr = diffc(rAbs);
+    const gg = diffc(gAbs);
+    const bb = diffc(bAbs);
+
+    if (rAbs === v) {
+      h = bb - gg;
+    } else if (gAbs === v) {
+      h = 1 / 3 + rr - bb;
+    } else if (bAbs === v) {
+      h = 2 / 3 + gg - rr;
+    }
+    if (h < 0) {
+      h += 1;
+    } else if (h > 1) {
+      h -= 1;
+    }
   }
-  return "#000000";
+  const hsv = {
+    h: Math.round(h * 360) as HSV["h"],
+    s: percentRoundFn(s) as HSV["s"],
+    v: percentRoundFn(v) as HSV["v"],
+  };
+
+  if ((rgb as RGBA).a !== undefined) {
+    return {
+      ...hsv,
+      a: (rgb as RGBA).a,
+    };
+  }
+  return hsv;
 };
+
+export const hsvToRgb = (hsv: HSV | HSVA): RGB | RGBA => {
+  const { h, s, v } = hsv;
+
+  let f,
+    p,
+    q,
+    t,
+    r = 0,
+    g = 0,
+    b = 0;
+
+  const i = Math.floor(h * 6);
+  f = h * 6 - i;
+  p = v * (1 - s);
+  q = v * (1 - f * s);
+  t = v * (1 - (1 - f) * s);
+
+  switch (i % 6) {
+    case 0:
+      (r = v), (g = t), (b = p);
+      break;
+    case 1:
+      (r = q), (g = v), (b = p);
+      break;
+    case 2:
+      (r = p), (g = v), (b = t);
+      break;
+    case 3:
+      (r = p), (g = q), (b = v);
+      break;
+    case 4:
+      (r = t), (g = p), (b = v);
+      break;
+    case 5:
+      (r = v), (g = p), (b = q);
+      break;
+  }
+  const rgb = {
+    r: Math.round(r * 255) as RGB["r"],
+    g: Math.round(g * 255) as RGB["g"],
+    b: Math.round(b * 255) as RGB["b"],
+  };
+
+  if ((hsv as HSVA).a !== undefined) {
+    return {
+      ...rgb,
+      a: (hsv as HSVA).a,
+    };
+  }
+  return rgb;
+};
+
+export const hsvToHsl = (hsv: HSV | HSVA): HSL | HSLA => {
+  const { h, s, v } = hsv;
+
+  let sat = s as number;
+
+  const l = ((2 - s) * v) / 2;
+
+  if (l != 0) {
+    if (l == 1) {
+      sat = 0;
+    } else if (l < 0.5) {
+      sat = (s * v) / (l * 2);
+    } else {
+      sat = (s * v) / (2 - l * 2);
+    }
+  }
+  const hsl = {
+    h: h as HSL["h"],
+    s: sat as HSL["s"],
+    l: l as HSL["l"],
+  };
+
+  if ((hsv as HSVA).a !== undefined) {
+    return {
+      ...hsl,
+      a: (hsv as HSVA).a,
+    };
+  }
+
+  return hsl;
+};
+
+export const hexToHsv = (src: HEX): HSV | HSVA => rgbToHsv(hexToRgb(src));
+export const hslToHsv = (src: HSL): HSV | HSVA => rgbToHsv(hslToRgb(src));
+export const cmykToHsv = (src: CMYK): HSV | HSVA => rgbToHsv(cmykToRgb(src));
+
+export const hsvToCmyk = (src: HSV | HSVA): CMYK => rgbToCmyk(hsvToRgb(src));
+export const hexToCmyk = (src: HEX): CMYK => rgbToCmyk(hexToRgb(src));
+export const hslToCmyk = (src: HSL | HSLA): CMYK => rgbToCmyk(hslToRgb(src));
+
+export const hsvToHex = (src: HSV | HSVA): HEX => rgbToHex(hsvToRgb(src));
+export const hslToHex = (src: HSL | HSLA): HEX => rgbToHex(hslToRgb(src));
+export const cmykToHex = (src: CMYK): HEX => rgbToHex(cmykToRgb(src));
+
+export const cmykToHsl = (src: CMYK): HSL => rgbToHsl(cmykToRgb(src));
