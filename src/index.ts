@@ -5,4 +5,5 @@ export * from "./get";
 export * from "./string";
 export * from "./manipulate"
 export * from "./brightness";
+export * from "./names";
 export * from "./types"
