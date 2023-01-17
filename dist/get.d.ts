@@ -12,4 +12,5 @@ export declare const getOpacity: (value: COLOR) => number;
 export declare const getRed: (value: COLOR) => number;
 export declare const getGreen: (value: COLOR) => number;
 export declare const getBlue: (value: COLOR) => number;
+export declare const getBrightness: (value: COLOR, round?: number) => number;
 //# sourceMappingURL=get.d.ts.map

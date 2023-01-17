@@ -185,6 +185,11 @@ const getBrightnessTests: {
     roundness: 1,
     output: 94,
   },
+  {
+    input: '#111111',
+    roundness: 1,
+    output: 7,
+  },
 ];
 
 describe("Get the Brightness of a color", () => {

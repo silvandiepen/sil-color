@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getBlue = exports.getGreen = exports.getRed = exports.getOpacity = exports.getSaturation = exports.getHue = exports.getLightness = exports.hueToRgb = exports.componentToHex = exports.getHueFromRgb = exports.getLightnessFromRgb = exports.getSaturationFromRgb = exports.getMinMaxRgb = void 0;
+exports.getBrightness = exports.getBlue = exports.getGreen = exports.getRed = exports.getOpacity = exports.getSaturation = exports.getHue = exports.getLightness = exports.hueToRgb = exports.componentToHex = exports.getHueFromRgb = exports.getLightnessFromRgb = exports.getSaturationFromRgb = exports.getMinMaxRgb = void 0;
 const convert_1 = require("./convert");
 const manipulate_1 = require("./manipulate");
 const types_1 = require("./types");
@@ -193,4 +193,10 @@ const getBlue = (value) => {
     }
 };
 exports.getBlue = getBlue;
+const getBrightness = (value, round = 100) => {
+    const { r, g, b } = (0, convert_1.toRGB)(value);
+    const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+    return Math.round(((hsp / 255) * 100) * round) / round;
+};
+exports.getBrightness = getBrightness;
 //# sourceMappingURL=get.js.map

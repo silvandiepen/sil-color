@@ -109,4 +109,50 @@ describe("Get the hue of an RGB value", () => {
         });
     });
 });
+const getBrightnessTests = [
+    { input: { r: 0, g: 0, b: 0 }, output: 0 },
+    {
+        input: { r: 255, g: 255, b: 255 },
+        output: 100,
+    },
+    {
+        input: { r: 255, g: 0, b: 0 },
+        output: 54.68,
+    },
+    {
+        input: { r: 0, g: 255, b: 0 },
+        output: 76.62,
+    },
+    {
+        input: { r: 0, g: 0, b: 255 },
+        output: 33.76,
+    },
+    {
+        input: { r: 0, g: 255, b: 255 },
+        roundness: 1000,
+        output: 83.726,
+    },
+    {
+        input: { r: 255, g: 255, b: 0 },
+        roundness: 1,
+        output: 94,
+    },
+    {
+        input: '#111111',
+        roundness: 1,
+        output: 7,
+    },
+];
+describe("Get the Brightness of a color", () => {
+    getBrightnessTests.forEach((value) => {
+        it("Should give the value", () => {
+            if (value.roundness) {
+                expect((0, get_1.getBrightness)(value.input, value.roundness)).toEqual(value.output);
+            }
+            else {
+                expect((0, get_1.getBrightness)(value.input)).toEqual(value.output);
+            }
+        });
+    });
+});
 //# sourceMappingURL=get.test.js.map

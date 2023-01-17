@@ -102,7 +102,31 @@ const mixTest = [
     {
         input1: { r: 0, g: 0, b: 0 },
         input2: { r: 255, g: 255, b: 255 },
+        amount: 50,
+        output: { r: 127, g: 127, b: 127 },
+    },
+    {
+        input1: { r: 0, g: 0, b: 0 },
+        input2: { r: 255, g: 255, b: 255 },
         amount: 25,
+        output: { r: 64, g: 64, b: 64 },
+    },
+    {
+        input1: { r: 0, g: 0, b: 0 },
+        input2: { r: 255, g: 255, b: 255 },
+        amount: 75,
+        output: { r: 191, g: 191, b: 191 },
+    },
+    {
+        input1: { r: 255, g: 255, b: 255 },
+        input2: { r: 0, g: 0, b: 0 },
+        amount: 25,
+        output: { r: 191, g: 191, b: 191 },
+    },
+    {
+        input1: { r: 255, g: 255, b: 255 },
+        input2: { r: 0, g: 0, b: 0 },
+        amount: 75,
         output: { r: 64, g: 64, b: 64 },
     },
 ];
