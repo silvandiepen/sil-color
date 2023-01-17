@@ -1,10 +1,6 @@
-import { hexToHsl, hexToRgb, hslToRgb, toRGB } from "./convert";
-import { getType } from "./manipulate";
-<<<<<<< HEAD
-import { toRgbObject } from "./object";
-=======
+import { hexToHsl, hexToRgb, hslToRgb } from "./convert";
 import { toRGB } from "./to";
->>>>>>> b7e2ac2a307f6f3d0a99208b903ed918ddada947
+import { getType } from "./manipulate";
 import { COLOR, ColorType, HSL, HSLA, RGB, RGBA, HEX, MinMax } from "./types";
 
 export const getMinMaxRgb = (rgb: RGB): MinMax => {
@@ -198,11 +194,11 @@ export const getBlue = (value: COLOR): number => {
   }
 };
 
-// http://alienryderflex.com/hsp.html
-export const getBrightness = (value: COLOR, round = 100): number => {
-  const { r, g, b } = toRGB(value);
+// // http://alienryderflex.com/hsp.html
+// export const getBrightness = (value: COLOR, round = 100): number => {
+//   const { r, g, b } = toRGB(value);
 
-  const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+//   const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
 
-  return Math.round(((hsp / 255) * 100) * round) / round;
-};
+//   return Math.round(((hsp / 255) * 100) * round) / round;
+// };

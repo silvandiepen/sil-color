@@ -2,16 +2,16 @@ import { RGB, RGBA, HSL, HSLA, CMYK } from "./types";
 
 import { toRgbObject, toHslObject, toCmykObject } from "./object";
 
-const valuesRGBToRGB: { input: string | RGB | RGBA; output: RGB }[] = [
+const valuesRGBToRGB: { input: string | RGB | RGBA; output: RGB | RGBA }[] = [
   { input: "rgb(255, 0, 0)", output: { r: 255, g: 0, b: 0 } },
   { input: { r: 255, g: 0, b: 0 }, output: { r: 255, g: 0, b: 0 } },
-  { input: { r: 255, g: 0, b: 0, a: 0 }, output: { r: 255, g: 0, b: 0 } },
+  { input: { r: 255, g: 0, b: 0, a: 0 }, output: { r: 255, g: 0, b: 0, a: 0 } },
 ];
 
-const valuesHSLToHSL: { input: string | HSL | HSLA; output: HSL }[] = [
+const valuesHSLToHSL: { input: string | HSL | HSLA; output: HSL | HSLA }[] = [
   { input: "hsl(0, 100, 0)", output: { h: 0, s: 100, l: 0 } },
   { input: { h: 0, s: 100, l: 0 }, output: { h: 0, s: 100, l: 0 } },
-  { input: { h: 0, s: 100, l: 0, a: 0 }, output: { h: 0, s: 100, l: 0 } },
+  { input: { h: 0, s: 100, l: 0, a: 0 }, output: { h: 0, s: 100, l: 0, a: 0 } },
 ];
 
 const valuesCMYKToCMYK: { input: string | CMYK; output: CMYK }[] = [
