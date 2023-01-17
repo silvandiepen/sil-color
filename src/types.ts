@@ -3,10 +3,10 @@ type _Range<T extends number, R extends unknown[]> = R["length"] extends T
   ? R[number]
   : _Range<T, [R["length"], ...R]>;
 
-type Base16Number = NumberRange<256>;
-type BinaryNumber = number; // TODO: Make this a FLOAT number between 0 and 1. 
-type PercentageNumber = NumberRange<101>;
-type GradientNumber = NumberRange<361>;
+export type Base16Number = NumberRange<256>;
+export type BinaryNumber = number; // TODO: Make this a FLOAT number between 0 and 1.
+export type PercentageNumber = NumberRange<101>;
+export type GradientNumber = NumberRange<361>;
 
 /*
  * HEX
@@ -79,13 +79,45 @@ export function instanceOfHSLA(obj: any): obj is HSLA {
 }
 
 /*
+ * HSV
+ */
+
+export interface HSV {
+  h: GradientNumber;
+  s: PercentageNumber;
+  v: PercentageNumber;
+}
+export interface HSVA extends HSV {
+  a: BinaryNumber;
+}
+
+export function instanceOfHSV(obj: any): obj is HSV {
+  return (
+    "h" in obj &&
+    "s" in obj &&
+    "v" in obj &&
+    !("a" in obj) &&
+    Object.keys(obj).length == 3
+  );
+}
+export function instanceOfHSVA(obj: any): obj is HSVA {
+  return (
+    "h" in obj &&
+    "s" in obj &&
+    "v" in obj &&
+    "a" in obj &&
+    Object.keys(obj).length == 4
+  );
+}
+
+/*
  * CMYK
  */
 
 export interface CMYK {
   c: PercentageNumber;
   m: PercentageNumber;
-  y: PercentageNumber;  
+  y: PercentageNumber;
   k: PercentageNumber;
 }
 
@@ -99,7 +131,6 @@ export function instanceOfCMYK(obj: any): obj is CMYK {
   );
 }
 
-
 /*
  * MISC
  */
@@ -110,15 +141,18 @@ export enum ColorType {
   HSL = "hsl",
   HSLA = "hsla",
   HEX = "hex",
+  HSV = "hsv",
+  HSVA = "hsva",
+  CMYK = "cmyk",
   UNKNOWN = "unknown",
 }
 
-export type COLOR = RGB | RGBA | HSL | HSLA | HEX;
+export type COLOR = RGB | RGBA | HSL | HSLA | HEX | HSV | HSVA | CMYK;
 
 export interface MinMax {
-  r: BinaryNumber,
-  g: BinaryNumber,
-  b: BinaryNumber,
-  min: BinaryNumber,
-  max: BinaryNumber
+  r: BinaryNumber;
+  g: BinaryNumber;
+  b: BinaryNumber;
+  min: BinaryNumber;
+  max: BinaryNumber;
 }

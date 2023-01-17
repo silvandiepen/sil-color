@@ -1,6 +1,10 @@
 {
   "name": "@sil/color",
+<<<<<<< HEAD
   "version": "0.1.6",
+=======
+  "version": "0.3.0",
+>>>>>>> b7e2ac2a307f6f3d0a99208b903ed918ddada947
   "description": "",
   "main": "dist/index.js",
   "scripts": {

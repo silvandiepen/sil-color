@@ -1,3 +1,4 @@
+import { getNumbers } from "./helpers";
 import { toHslString, toRgbString } from "./string";
 import {
   instanceOfHSL,
@@ -37,11 +38,7 @@ export const isRGBA = (value: string | any): boolean => {
   if (typeof value !== "string" && instanceOfRGBA(value)) return true;
   if (typeof value !== "string") return false;
 
-  const rgbNumbers: number[] = [];
-  value
-    .replace(/[^\d,]/g, "")
-    .split(",")
-    .forEach((v) => rgbNumbers.push(parseInt(v)));
+  const rgbNumbers = getNumbers(value);
 
   return (
     value.startsWith("rgba(") &&
@@ -56,11 +53,7 @@ export const isHSL = (value: string): boolean => {
   if (typeof value !== "string" && instanceOfHSL(value)) return true;
   if (typeof value !== "string") return false;
 
-  const hslNumbers: number[] = [];
-  value
-    .replace(/[^\d,]/g, "")
-    .split(",")
-    .forEach((v) => hslNumbers.push(parseInt(v)));
+  const hslNumbers = getNumbers(value);
 
   return (
     value.startsWith("hsl(") &&
@@ -75,11 +68,7 @@ export const isHSLA = (value: string): boolean => {
   if (typeof value !== "string" && instanceOfHSLA(value)) return true;
   if (typeof value !== "string") return false;
 
-  const hslNumbers: number[] = [];
-  value
-    .replace(/[^\d,]/g, "")
-    .split(",")
-    .forEach((v) => hslNumbers.push(parseInt(v)));
+  const hslNumbers = getNumbers(value);
 
   return (
     value.startsWith("hsla(") &&
@@ -89,17 +78,41 @@ export const isHSLA = (value: string): boolean => {
     !hslNumbers.some((n) => Math.round(n) !== n)
   );
 };
+export const isHSV = (value: string): boolean => {
+  if (typeof value !== "string" && instanceOfHSL(value)) return true;
+  if (typeof value !== "string") return false;
 
+  const hslNumbers = getNumbers(value);
+
+  return (
+    value.startsWith("hsv(") &&
+    value.endsWith(")") &&
+    hslNumbers.length == 3 &&
+    !hslNumbers.some((n) => n > 100 || n < 0) &&
+    !hslNumbers.some((n) => Math.round(n) !== n)
+  );
+};
+
+export const isHSVA = (value: string): boolean => {
+  if (typeof value !== "string" && instanceOfHSLA(value)) return true;
+  if (typeof value !== "string") return false;
+
+  const hslNumbers = getNumbers(value);
+
+  return (
+    value.startsWith("hsva(") &&
+    value.endsWith(")") &&
+    hslNumbers.length == 4 &&
+    !hslNumbers.some((n) => n > 100 || n < 0) &&
+    !hslNumbers.some((n) => Math.round(n) !== n)
+  );
+};
 
 export const isCMYK = (value: string): boolean => {
   if (typeof value !== "string" && instanceOfCMYK(value)) return true;
   if (typeof value !== "string") return false;
 
-  const cmykNumbers: number[] = [];
-  value
-    .replace(/[^\d,]/g, "")
-    .split(",")
-    .forEach((v) => cmykNumbers.push(parseInt(v)));
+  const cmykNumbers = getNumbers(value);
 
   return (
     value.startsWith("cmyk(") &&

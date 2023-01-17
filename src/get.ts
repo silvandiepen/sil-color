@@ -1,6 +1,10 @@
 import { hexToHsl, hexToRgb, hslToRgb, toRGB } from "./convert";
 import { getType } from "./manipulate";
+<<<<<<< HEAD
 import { toRgbObject } from "./object";
+=======
+import { toRGB } from "./to";
+>>>>>>> b7e2ac2a307f6f3d0a99208b903ed918ddada947
 import { COLOR, ColorType, HSL, HSLA, RGB, RGBA, HEX, MinMax } from "./types";
 
 export const getMinMaxRgb = (rgb: RGB): MinMax => {
