@@ -1,28 +1,21 @@
 import { getName } from "./names";
+import { COLOR } from "./types";
 
 describe("names", () => {
-  it("should return the right name -- basics", () => {
-    expect(getName("#000000")).toBe("Black");
-    expect(getName("#7f7f7f")).toBe("Gray");
-    expect(getName("#ffffff")).toBe("White");
-  });
+  const tests: [COLOR, string][] = [
+    ["#000000", "Black"],
+    ["#7f7f7f", "Gray"],
+    ["#ffffff", "White"],
+    [{ r: 255, g: 0, b: 0 }, "Red"],
+    [{ r: 255, g: 2, b: 2 }, "Red"],
+    [{ r: 0, g: 255, b: 0 }, "Green"],
+    [{ r: 0, g: 0, b: 255 }, "Blue"],
+    [{ r: 255, g: 255, b: 0 }, "Yellow"],
+    [{ r: 255, g:0 , b: 255 }, "Magenta / Fuchsia"],
+    [{ r: 0, g: 255, b: 255 }, "Cyan / Aqua"],
+  ];
 
-  it("should return the right name -- rgb Red", () => {
-    expect(getName({ r: 255, g: 0, b: 0 })).toBe("Red");
-  });
-  it("should return the right name -- rgb Green", () => {
-    expect(getName({ r: 0, g: 255, b: 0 })).toBe("Green");
-  });
-  it("should return the right name -- rgb Blue", () => {
-    expect(getName({ r: 0, g: 0, b: 255 })).toBe("Blue");
-  });
-  it("should return the right name -- rgb Yellow", () => {
-    expect(getName({ r: 255, g: 255, b: 0 })).toBe("Yellow");
-  });
-  it("should return the right name -- rgb Magenta", () => {
-    expect(getName({ r: 255, g: 0, b: 255 })).toBe("Magenta / Fuchsia");
-  });
-  it("should return the right name -- rgb Cyan", () => {
-    expect(getName({ r: 0, g: 255, b: 255 })).toBe("Cyan / Aqua");
+  it.each(tests)("should return the right name -- %p == %s", (input, output) => {
+    expect(getName(input)).toBe(output);
   });
 });

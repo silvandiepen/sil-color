@@ -7,3 +7,4 @@ export * from "./manipulate"
 export * from "./brightness";
 export * from "./names";
 export * from "./types"
+export * from "./nearest"
