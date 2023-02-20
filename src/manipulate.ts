@@ -1,3 +1,4 @@
+import { minmax } from "./helpers";
 import { isRGB, isHex, isHSL, isRGBA, isHSLA } from "./is";
 import { toHSL, toRGB, toType } from "./to";
 import type { HEX, HSL, HSV, RGB, COLOR, HSLA, RGBA } from "./types";
@@ -19,9 +20,9 @@ export const setLightness = (value: COLOR, lightness: HSL["l"]): COLOR => {
   const hsl: HSL = {
     h: h,
     s: s,
-    l: lightness,
+    l: minmax(lightness, 0, 100) as HSL['l'],
   };
-  
+
   return toType(hsl, type);
 };
 
@@ -51,6 +52,7 @@ export const setOpacity = (value: COLOR, alpha: HSLA["a"]): COLOR => {
 export const lighten = (value: COLOR, amount: number): COLOR => {
   const { l } = toHSL(value);
   const type = getType(value);
+
   const color = setLightness(value, (l * amount) as HSL["l"]);
   return toType(color, type);
 };
@@ -58,6 +60,7 @@ export const lighten = (value: COLOR, amount: number): COLOR => {
 export const darken = (value: RGB | HSL | HEX, amount: number): COLOR => {
   const { l } = toHSL(value);
   const type = getType(value);
+
   const color = setLightness(value, (l / amount) as HSL["l"]);
   return toType(color, type);
 };
