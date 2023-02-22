@@ -1,3 +1,4 @@
+import { getBrightness } from "./brightness";
 import { minmax } from "./helpers";
 import { isRGB, isHex, isHSL, isRGBA, isHSLA } from "./is";
 import { toHSL, toRGB, toType } from "./to";
@@ -20,7 +21,20 @@ export const setLightness = (value: COLOR, lightness: HSL["l"]): COLOR => {
   const hsl: HSL = {
     h: h,
     s: s,
-    l: minmax(lightness, 0, 100) as HSL['l'],
+    l: minmax(lightness, 0, 100) as HSL["l"],
+  };
+
+  return toType(hsl, type);
+};
+
+export const setSaturation = (value: COLOR, saturation: HSL["s"]): COLOR => {
+  const { h, l } = toHSL(value);
+  const type = getType(value);
+
+  const hsl: HSL = {
+    h: h,
+    s: minmax(saturation, 0, 100) as HSL["s"],
+    l: l,
   };
 
   return toType(hsl, type);
@@ -84,4 +98,26 @@ export const mix = (from: RGB, to: RGB, amount: number): COLOR => {
   };
 
   return toType(result, type);
+};
+
+export const altDarken = (value: RGB | HSL | HEX, amount: number): COLOR => {
+  const { l, s } = toHSL(value);
+  const type = getType(value);
+
+  const color = setSaturation(
+    setLightness(value, (l / amount) as HSL["l"]),
+    (s / amount) as HSL["s"]
+  );
+  return toType(color, type);
+};
+
+export const textColor = (
+  value: COLOR,
+  args: { dark: COLOR; light: COLOR; offset: number } = {
+    dark: "#000000",
+    light: "#ffffff",
+    offset: 50,
+  }
+) => {
+  return getBrightness(value) > args.offset ? args.dark : args.light;
 };
