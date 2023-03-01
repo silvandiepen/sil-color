@@ -122,3 +122,15 @@ export const isCMYK = (value: string): boolean => {
     !cmykNumbers.some((n) => Math.round(n) !== n)
   );
 };
+
+export const isCOLOR = (value: any): boolean => {
+  return (
+    isHex(value) ||
+    isHSL(value) ||
+    isHSLA(value) ||
+    isRGB(value) ||
+    isRGBA(value) ||
+    isHSV(value) ||
+    isHSVA(value)
+  );
+};

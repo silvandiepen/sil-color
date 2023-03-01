@@ -6,9 +6,12 @@ import {
   RGBA,
   instanceOfRGBA,
   instanceOfHSLA,
+  instanceOfHSVA,
   ColorType,
   COLOR,
   HEX,
+  HSVA,
+  HSV,
 } from "./types";
 
 export const toHslString = (value: HSL | HSLA): string => {
@@ -16,6 +19,12 @@ export const toHslString = (value: HSL | HSLA): string => {
   return instanceOfHSLA(v)
     ? `hsla(${v.h}, ${v.s}, ${v.l}, ${v.a})`
     : `hsl(${v["h"]}, ${v["s"]}, ${v["l"]})`;
+};
+export const toHsvString = (value: HSV | HSVA): string => {
+  const v: HSVA = value as HSVA;
+  return instanceOfHSVA(v)
+    ? `hsva(${v.h}, ${v.s}, ${v.v}, ${v.a})`
+    : `hsv(${v["h"]}, ${v["s"]}, ${v["l"]})`;
 };
 
 export const toRgbString = (value: RGB | RGBA): string => {
@@ -38,6 +47,9 @@ export const toString = (value: COLOR): string => {
     case ColorType.HSL:
     case ColorType.HSLA:
       return toHslString(value as HSLA);
+    case ColorType.HSV:
+    case ColorType.HSVA:
+      return toHsvString(value as HSVA);
     case ColorType.HEX:
       return toHexString(value as HEX);
     default:
