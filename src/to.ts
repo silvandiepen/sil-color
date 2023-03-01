@@ -82,6 +82,14 @@ export const toHSL = (color: COLOR): HSL | HSLA => {
   }
   return defaultValues.hsl;
 };
+export const toHSLA = (color: COLOR): HSLA => {
+  const hsla = toHSL(color) as HSLA;
+  const alpha = hsla.a > -1 ? hsla.a : 1;
+  return {
+    ...hsla,
+    a: alpha,
+  };
+};
 
 export const toHSV = (color: COLOR): HSV | HSVA => {
   if (typeof color == "string") {
@@ -98,6 +106,14 @@ export const toHSV = (color: COLOR): HSV | HSVA => {
     return cmykToHsv(color);
   }
   return defaultValues.hsv;
+};
+export const toHSVA = (color: COLOR): HSVA => {
+  const hsva = toHSV(color) as HSVA;
+  const alpha = hsva.a > -1 ? hsva.a : 1;
+  return {
+    ...hsva,
+    a: alpha,
+  };
 };
 
 export const toRGB = (color: COLOR): RGB | RGBA => {
@@ -116,6 +132,14 @@ export const toRGB = (color: COLOR): RGB | RGBA => {
     return cmykToRgb(color);
   }
   return defaultValues.rgb;
+};
+export const toRGBA = (color: COLOR): RGBA => {
+  const rgba = toRGB(color) as RGBA;
+  const alpha = rgba.a > -1 ? rgba.a : 1;
+  return {
+    ...rgba,
+    a: alpha,
+  };
 };
 
 export const toCMYK = (color: COLOR): CMYK => {
@@ -142,15 +166,17 @@ export const toType = (color: COLOR, type: ColorType) => {
     case ColorType.HEX:
       return toHex(color);
     case ColorType.RGB:
-    case ColorType.RGBA:
       return toRGB(color);
-
+    case ColorType.RGBA:
+      return toRGBA(color);
     case ColorType.HSL:
-    case ColorType.HSLA:
       return toHSL(color);
+    case ColorType.HSLA:
+      return toHSLA(color);
     case ColorType.HSV:
-    case ColorType.HSVA:
       return toHSV(color);
+    case ColorType.HSVA:
+      return toHSVA(color);
     case ColorType.CMYK:
       return toCMYK(color);
     default:

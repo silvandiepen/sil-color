@@ -1,6 +1,15 @@
 import type { HSL, HSLA, RGB, RGBA, COLOR, CMYK, HSV, HSVA } from "./types";
 import { ColorType } from "./types";
-import { toHSL, toRGB, toType, toCMYK, toHSV } from "./to";
+import {
+  toHSL,
+  toHSLA,
+  toRGB,
+  toRGBA,
+  toType,
+  toCMYK,
+  toHSV,
+  toHSVA,
+} from "./to";
 
 const convertToCMYK: { input: COLOR; output: CMYK }[] = [
   {
@@ -35,6 +44,20 @@ const convertToRGB: { input: COLOR; output: RGB | RGBA }[] = [
     output: { r: 255, g: 255, b: 255 },
   },
 ];
+const convertToRGBA: { input: COLOR; output: RGB | RGBA }[] = [
+  {
+    input: { h: 0, s: 0, l: 0 },
+    output: { r: 0, g: 0, b: 0, a: 1 },
+  },
+  {
+    input: { h: 0, s: 0, l: 0, a: 0.5 },
+    output: { r: 0, g: 0, b: 0, a: 0.5 },
+  },
+  {
+    input: "#ffffff",
+    output: { r: 255, g: 255, b: 255, a: 1},
+  },
+];
 const convertToHSV: { input: COLOR; output: HSV | HSVA }[] = [
   {
     input: { h: 50, s: 50, l: 50 },
@@ -47,6 +70,20 @@ const convertToHSV: { input: COLOR; output: HSV | HSVA }[] = [
   {
     input: "#ffffff",
     output: { h: 0, s: 0, v: 100 },
+  },
+];
+const convertToHSVA: { input: COLOR; output: HSV | HSVA }[] = [
+  {
+    input: { h: 50, s: 50, l: 50 },
+    output: { h: 50, s: 66, v: 75, a: 1 },
+  },
+  {
+    input: { h: 0, s: 0, l: 0, a: 0.5 },
+    output: { h: 0, s: 0, v: 0, a: 0.5 },
+  },
+  {
+    input: "#ffffff",
+    output: { h: 0, s: 0, v: 100, a: 1 },
   },
 ];
 
@@ -62,6 +99,20 @@ const convertToHSL: { input: COLOR; output: HSL | HSLA }[] = [
   {
     input: "#ffffff",
     output: { h: 0, s: 0, l: 100 },
+  },
+];
+const convertToHSLA: { input: COLOR; output: HSL | HSLA }[] = [
+  {
+    input: { r: 0, g: 0, b: 0 },
+    output: { h: 0, s: 0, l: 0, a: 1 },
+  },
+  {
+    input: { r: 0, g: 0, b: 0, a: 0.5 },
+    output: { h: 0, s: 0, l: 0, a: 0.5 },
+  },
+  {
+    input: "#ffffff",
+    output: { h: 0, s: 0, l: 100, a: 1 },
   },
 ];
 
@@ -93,6 +144,13 @@ describe("to RGB", () => {
     });
   });
 });
+describe("to RGBA", () => {
+  convertToRGBA.forEach((value) => {
+    it(`should convert to RGBA value - ${JSON.stringify(value.input)}`, () => {
+      expect(toRGBA(value.input)).toEqual(value.output);
+    });
+  });
+});
 
 describe("to HSV", () => {
   convertToHSV.forEach((value) => {
@@ -101,11 +159,26 @@ describe("to HSV", () => {
     });
   });
 });
+describe("to HSVA", () => {
+  convertToHSVA.forEach((value) => {
+    it(`should convert to HSVA value - ${JSON.stringify(value.input)}`, () => {
+      expect(toHSVA(value.input)).toEqual(value.output);
+    });
+  });
+});
 
 describe("to HSL", () => {
   convertToHSL.forEach((value) => {
     it(`should convert to HSL value - ${JSON.stringify(value.input)}`, () => {
       expect(toHSL(value.input)).toEqual(value.output);
+    });
+  });
+});
+
+describe("to HSLA", () => {
+  convertToHSLA.forEach((value) => {
+    it(`should convert to HSLA value - ${JSON.stringify(value.input)}`, () => {
+      expect(toHSLA(value.input)).toEqual(value.output);
     });
   });
 });
