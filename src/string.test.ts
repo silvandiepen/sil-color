@@ -23,11 +23,11 @@ describe("to RGB string", () => {
 const toHslStrings: { input: HSL | HSLA; output: string }[] = [
   {
     input: { h: 0, s: 0, l: 0 },
-    output: "hsl(0, 0, 0)",
+    output: "hsl(0deg, 0%, 0%)",
   },
   {
     input: { h: 0, s: 0, l: 0, a: 0 },
-    output: "hsla(0, 0, 0, 0)",
+    output: "hsla(0deg, 0%, 0%, 0)",
   },
 ];
 

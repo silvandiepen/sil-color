@@ -17,15 +17,16 @@ import {
 export const toHslString = (value: HSL | HSLA): string => {
   const v: HSLA = value as HSLA;
   return instanceOfHSLA(v)
-    ? `hsla(${v.h}, ${v.s}, ${v.l}, ${v.a})`
-    : `hsl(${v["h"]}, ${v["s"]}, ${v["l"]})`;
+    ? `hsla(${v.h}deg, ${v.s}%, ${v.l}%, ${v.a})`
+    : `hsl(${v["h"]}deg, ${v["s"]}%, ${v["l"]}%)`;
 };
 export const toHsvString = (value: HSV | HSVA): string => {
   const v: HSVA = value as HSVA;
   return instanceOfHSVA(v)
-    ? `hsva(${v.h}, ${v.s}, ${v.v}, ${v.a})`
-    : `hsv(${v["h"]}, ${v["s"]}, ${v["l"]})`;
+    ? `hsva(${v.h}deg, ${v.s}%, ${v.v}%, ${v.a})`
+    : `hsv(${v["h"]}deg, ${v["s"]}%, ${v["l"]}%)`;
 };
+
 
 export const toRgbString = (value: RGB | RGBA): string => {
   const v: RGBA = value as RGBA;
