@@ -1,4 +1,4 @@
-import { getNumbers } from "./helpers";
+import { areBetween, getNumbers, isBetween, shift } from "./helpers";
 import { toHslString, toRgbString } from "./string";
 import {
   instanceOfHSL,
@@ -59,7 +59,8 @@ export const isHSL = (value: string): boolean => {
     value.startsWith("hsl(") &&
     value.endsWith(")") &&
     hslNumbers.length == 3 &&
-    !hslNumbers.some((n) => n > 100 || n < 0) &&
+    isBetween(hslNumbers[1], 0, 360) &&
+    areBetween(shift(hslNumbers), 0, 100) &&
     !hslNumbers.some((n) => Math.round(n) !== n)
   );
 };
@@ -74,7 +75,8 @@ export const isHSLA = (value: string): boolean => {
     value.startsWith("hsla(") &&
     value.endsWith(")") &&
     hslNumbers.length == 4 &&
-    !hslNumbers.some((n) => n > 100 || n < 0) &&
+    isBetween(hslNumbers[1], 0, 360) &&
+    areBetween(shift(hslNumbers), 0, 100) &&
     !hslNumbers.some((n) => Math.round(n) !== n)
   );
 };
@@ -88,7 +90,8 @@ export const isHSV = (value: string): boolean => {
     value.startsWith("hsv(") &&
     value.endsWith(")") &&
     hslNumbers.length == 3 &&
-    !hslNumbers.some((n) => n > 100 || n < 0) &&
+    isBetween(hslNumbers[1], 0, 360) &&
+    areBetween(shift(hslNumbers), 0, 100) &&
     !hslNumbers.some((n) => Math.round(n) !== n)
   );
 };
@@ -103,7 +106,8 @@ export const isHSVA = (value: string): boolean => {
     value.startsWith("hsva(") &&
     value.endsWith(")") &&
     hslNumbers.length == 4 &&
-    !hslNumbers.some((n) => n > 100 || n < 0) &&
+    isBetween(hslNumbers[1], 0, 360) &&
+    areBetween(shift(hslNumbers), 0, 100) &&
     !hslNumbers.some((n) => Math.round(n) !== n)
   );
 };

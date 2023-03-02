@@ -47,5 +47,18 @@ function YtoLstar(Y: number) {
   return Math.pow(Y, 1 / 3) * 116 - 16;
 }
 
+const isDefined = (value: any): boolean => typeof value !== undefined;
+
 export const minmax = (num: number, min = 0, max = 100) =>
   Math.min(Math.max(num, min), max);
+
+export const isBetween = (val: number, min: number, max: number): boolean =>
+  val >= min && val <= max;
+
+export const areBetween = (vals: number[], min: number, max: number): boolean =>
+  !vals.find((v: number) => !isBetween(v, min, max));
+
+export const shift = (value: any[]): any[] => {
+  value.shift();
+  return isDefined(value) ? value : [];
+};
