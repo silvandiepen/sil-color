@@ -53,9 +53,16 @@ const isHslValues = [
   {
     input: "hsl(0,0,0)",
     result: true,
+  },  {
+    input: "hsl(100,0,200)",
+    result: false,
   },
   {
     input: "hsl(255,0,0)",
+    result: true,
+  },
+  {
+    input: "hsl(361,0,0)",
     result: false,
   },
   {

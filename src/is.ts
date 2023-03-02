@@ -59,7 +59,7 @@ export const isHSL = (value: string): boolean => {
     value.startsWith("hsl(") &&
     value.endsWith(")") &&
     hslNumbers.length == 3 &&
-    isBetween(hslNumbers[1], 0, 360) &&
+    isBetween(hslNumbers[0], 0, 360) &&
     areBetween(shift(hslNumbers), 0, 100) &&
     !hslNumbers.some((n) => Math.round(n) !== n)
   );
@@ -75,7 +75,7 @@ export const isHSLA = (value: string): boolean => {
     value.startsWith("hsla(") &&
     value.endsWith(")") &&
     hslNumbers.length == 4 &&
-    isBetween(hslNumbers[1], 0, 360) &&
+    isBetween(hslNumbers[0], 0, 360) &&
     areBetween(shift(hslNumbers), 0, 100) &&
     !hslNumbers.some((n) => Math.round(n) !== n)
   );
@@ -90,7 +90,7 @@ export const isHSV = (value: string): boolean => {
     value.startsWith("hsv(") &&
     value.endsWith(")") &&
     hslNumbers.length == 3 &&
-    isBetween(hslNumbers[1], 0, 360) &&
+    isBetween(hslNumbers[0], 0, 360) &&
     areBetween(shift(hslNumbers), 0, 100) &&
     !hslNumbers.some((n) => Math.round(n) !== n)
   );
@@ -106,7 +106,7 @@ export const isHSVA = (value: string): boolean => {
     value.startsWith("hsva(") &&
     value.endsWith(")") &&
     hslNumbers.length == 4 &&
-    isBetween(hslNumbers[1], 0, 360) &&
+    isBetween(hslNumbers[0], 0, 360) &&
     areBetween(shift(hslNumbers), 0, 100) &&
     !hslNumbers.some((n) => Math.round(n) !== n)
   );
