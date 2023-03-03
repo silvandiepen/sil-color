@@ -10,7 +10,16 @@ import {
   HSVA,
   ColorType,
 } from "./types";
-import { isHex, isRGB, isHSL, isCMYK, isHSV } from "./is";
+import {
+  isHex,
+  isRGB,
+  isHSL,
+  isCMYK,
+  isHSV,
+  isHSLA,
+  isRGBA,
+  isHSVA,
+} from "./is";
 import {
   instanceOfCMYK,
   instanceOfRGB,
@@ -44,13 +53,17 @@ import {
 } from "./convert";
 import { toRgbObject, toCmykObject, toHslObject, toHsvObject } from "./object";
 import { defaultValues } from "./convert";
+import { getType } from "./manipulate";
 
 export const toHex = (color: COLOR): HEX => {
   if (typeof color == "string") {
     if (isHex(color as string)) return color as HEX;
     if (isRGB(color as string)) return rgbToHex(toRgbObject(color));
+    if (isRGBA(color as string)) return rgbToHex(toRgbObject(color));
     if (isHSL(color as string)) return hslToHex(toHslObject(color));
+    if (isHSLA(color as string)) return hslToHex(toHslObject(color));
     if (isHSV(color as string)) return hsvToHex(toHsvObject(color));
+    if (isHSVA(color as string)) return hsvToHex(toHsvObject(color));
     if (isCMYK(color as string)) return cmykToHex(toCmykObject(color));
   } else if (instanceOfRGB(color) || instanceOfRGBA(color)) {
     return rgbToHex(color);
@@ -68,8 +81,12 @@ export const toHSL = (color: COLOR): HSL | HSLA => {
   if (typeof color == "string") {
     if (isHex(color as string)) return hexToHsl(color);
     if (isRGB(color as string)) return rgbToHsl(toRgbObject(color));
+    if (isRGBA(color as string)) return rgbToHsl(toRgbObject(color));
     if (isHSL(color as string)) return toHslObject(color);
+    if (isHSLA(color as string)) return toHslObject(color);
     if (isHSV(color as string)) return hsvToHsl(toHsvObject(color));
+    if (isHSV(color as string)) return hsvToHsl(toHsvObject(color));
+    if (isHSVA(color as string)) return hsvToHsl(toHsvObject(color));
     if (isCMYK(color as string)) return cmykToHsl(toCmykObject(color));
   } else if (instanceOfRGB(color) || instanceOfRGBA(color)) {
     return rgbToHsl(color);
@@ -95,8 +112,11 @@ export const toHSV = (color: COLOR): HSV | HSVA => {
   if (typeof color == "string") {
     if (isHex(color as string)) return hexToHsv(color);
     if (isRGB(color as string)) return rgbToHsv(toRgbObject(color));
+    if (isRGBA(color as string)) return rgbToHsv(toRgbObject(color));
     if (isHSL(color as string)) return hslToHsv(toHslObject(color));
+    if (isHSLA(color as string)) return hslToHsv(toHslObject(color));
     if (isHSV(color as string)) return toHsvObject(color);
+    if (isHSVA(color as string)) return toHsvObject(color);
     if (isCMYK(color as string)) return cmykToHsv(toCmykObject(color));
   } else if (instanceOfRGB(color) || instanceOfRGBA(color)) {
     return rgbToHsv(color);
@@ -120,7 +140,11 @@ export const toRGB = (color: COLOR): RGB | RGBA => {
   if (typeof color == "string") {
     if (isHex(color as string)) return hexToRgb(color);
     if (isRGB(color as string)) return toRgbObject(color);
+    if (isRGBA(color as string)) return toRgbObject(color);
     if (isHSL(color as string)) return hslToRgb(toHslObject(color));
+    if (isHSLA(color as string)) return hslToRgb(toHslObject(color));
+    if (isHSV(color as string)) return hsvToRgb(toHsvObject(color));
+    if (isHSVA(color as string)) return hsvToRgb(toHsvObject(color));
     if (isCMYK(color as string)) return cmykToRgb(toCmykObject(color));
   } else if (instanceOfRGB(color) || instanceOfRGBA(color)) {
     return color;
@@ -146,8 +170,11 @@ export const toCMYK = (color: COLOR): CMYK => {
   if (typeof color == "string") {
     if (isHex(color as string)) return hexToCmyk(color);
     if (isRGB(color as string)) return rgbToCmyk(toRgbObject(color));
+    if (isRGBA(color as string)) return rgbToCmyk(toRgbObject(color));
     if (isHSL(color as string)) return hslToCmyk(toHslObject(color));
+    if (isHSLA(color as string)) return hslToCmyk(toHslObject(color));
     if (isHSV(color as string)) return hsvToCmyk(toHsvObject(color));
+    if (isHSVA(color as string)) return hsvToCmyk(toHsvObject(color));
     if (isCMYK(color as string)) return toCmykObject(color);
   } else if (instanceOfRGB(color) || instanceOfRGBA(color)) {
     return rgbToCmyk(color);

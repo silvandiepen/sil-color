@@ -15,11 +15,15 @@ import { toCMYK, toHSL, toHSV, toRGB } from "./to";
 
 export const toHslObject = (input: string | COLOR): HSL | HSLA => {
 
+
+
   if (typeof input !== "string") return toHSL(input);
+
 
   if (!isHSL(input) && !isHSLA(input)) return defaultValues.hsl;
 
   const values = getNumbers(input);
+
 
   let alpha = values[3] || null;
   return alpha

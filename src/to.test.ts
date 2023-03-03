@@ -55,7 +55,7 @@ const convertToRGBA: { input: COLOR; output: RGB | RGBA }[] = [
   },
   {
     input: "#ffffff",
-    output: { r: 255, g: 255, b: 255, a: 1},
+    output: { r: 255, g: 255, b: 255, a: 1 },
   },
 ];
 const convertToHSV: { input: COLOR; output: HSV | HSVA }[] = [
@@ -113,6 +113,10 @@ const convertToHSLA: { input: COLOR; output: HSL | HSLA }[] = [
   {
     input: "#ffffff",
     output: { h: 0, s: 0, l: 100, a: 1 },
+  },
+  {
+    input: "hsla(0deg, 33%, 25%, 1)",
+    output: { h: 0, s: 33, l: 25, a: 1 },
   },
 ];
 

@@ -10,6 +10,9 @@ const valuesRGBToRGB: { input: string | RGB | RGBA; output: RGB | RGBA }[] = [
 
 const valuesHSLToHSL: { input: string | HSL | HSLA; output: HSL | HSLA }[] = [
   { input: "hsl(0, 100, 0)", output: { h: 0, s: 100, l: 0 } },
+  { input: "hsl(230deg, 50%, 10%)", output: { h: 230, s: 50, l: 10 } },
+  { input: "hsl(230deg, 50%, 10%, 1)", output: { h: 230, s: 50, l: 10, a: 1 } },
+  { input: "hsla(230deg, 50%, 10%, 1)", output: { h: 230, s: 50, l: 10, a: 1 } },
   { input: { h: 0, s: 100, l: 0 }, output: { h: 0, s: 100, l: 0 } },
   { input: { h: 0, s: 100, l: 0, a: 0 }, output: { h: 0, s: 100, l: 0, a: 0 } },
 ];
