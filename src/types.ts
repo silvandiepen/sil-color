@@ -135,17 +135,18 @@ export function instanceOfCMYK(obj: any): obj is CMYK {
  * MISC
  */
 
-export enum ColorType {
-  RGB = "rgb",
-  RGBA = "rgba",
-  HSL = "hsl",
-  HSLA = "hsla",
-  HEX = "hex",
-  HSV = "hsv",
-  HSVA = "hsva",
-  CMYK = "cmyk",
-  UNKNOWN = "unknown",
+export const ColorType = {
+  RGB: "rgb",
+  RGBA: "rgba",
+  HSL: "hsl",
+  HSLA: "hsla",
+  HEX: "hex",
+  HSV: "hsv",
+  HSVA: "hsva",
+  CMYK: "cmyk",
+  UNKNOWN: "unknown",
 }
+export type ColorType = typeof ColorType[keyof typeof ColorType];
 
 export type COLOR = RGB | RGBA | HSL | HSLA | HEX | HSV | HSVA | CMYK;
 

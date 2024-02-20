@@ -6,5 +6,6 @@ export * from "./string";
 export * from "./manipulate"
 export * from "./brightness";
 export * from "./names";
-export * from "./types"
-export * from "./nearest"
+export * from "./types";
+export * from "./nearest";
+export * from "./random";
