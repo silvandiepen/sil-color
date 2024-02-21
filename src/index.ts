@@ -9,3 +9,4 @@ export * from "./names";
 export * from "./types";
 export * from "./nearest";
 export * from "./random";
+export * from "./complimentary";
