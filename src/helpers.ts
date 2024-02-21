@@ -62,3 +62,8 @@ export const shift = (value: any[]): any[] => {
   value.shift();
   return isDefined(value) ? value : [];
 };
+
+export const randomBetween = (min: number, max: number): number => {
+  if (min == max) return min;
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
