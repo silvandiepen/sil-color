@@ -144,9 +144,19 @@ export function getRandomColor(
 }
 
 export const getRandomPastel = (options: Partial<RandomOptions> = {}): ColorType | string => {
-    return getRandomColor({ ...options, limit: { l: [85, 95] } } as Partial<RandomOptions>);
+    return getRandomColor({ 
+        ...options, limit: { 
+            s: [80, 100], 
+            l: [85, 95] 
+        } 
+    } as Partial<RandomOptions>);
 }
 
 export const getRandomBright = (options: Partial<RandomOptions> = {}): ColorType | string => {
-    return getRandomColor({ ...options, limit: { s: [80, 100], l: [40, 60] } } as Partial<RandomOptions>);
+    return getRandomColor({
+        ...options, limit: {
+            s: [80, 95],
+            l: [40, 60],
+        }
+    } as Partial<RandomOptions>);
 }
