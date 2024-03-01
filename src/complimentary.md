@@ -1,51 +1,60 @@
-# Complimentary 
+# Complimentary Color Generator
 
-The Complimentary Color Generator is a utility module that provides functions for generating complimentary colors based on a given base color.
+The Complimentary Color Generator is a utility module that provides functions for generating complementary colors based on a given base color.
 
-## Functions:
+### Functions:
 
-### `getComplimentary(color: COLOR, options?: Partial<ComplimentaryOptions>): RGB[]`
+1. **`getComplimentary(color: COLOR, options?: Partial<ComplimentaryOptions>): Color[]`**:
+   - Generates complementary colors based on the provided options.
+   - **Parameters:**
+     - `color`: `COLOR` - The base color for which complementary colors will be generated.
+     - `options`: `Partial<ComplimentaryOptions>` (optional) - An object containing options for generating complementary colors. If not provided, default options will be used.
+   - **Returns:**
+     - `Color[]` - An array of colors representing the complementary colors generated.
 
-Generates complimentary colors based on the provided options.
+### Enum:
 
-- **Parameters:**
-  - `color`: `COLOR` - The base color for which complimentary colors will be generated.
-  - `options`: `Partial<ComplimentaryOptions>` (optional) - An object containing options for generating complimentary colors. If not provided, default options will be used.
+2. **`ComplimentaryType`**:
+   - An enum defining the types of complementary colors available for generation:
+     - `SHADE`: Represents shades of the base color.
+     - `TINT`: Represents tints of the base color.
+     - `TONE`: Represents tones of the base color.
+     - `HUE`: Represents hues derived from the base color.
 
-- **Returns:**
-  - `RGB[]` - An array of RGB colors representing the complimentary colors generated.
+### Interface:
 
-### `ComplimentaryType`
+3. **`ComplimentaryOptions`**:
+   - An interface defining options for generating complementary colors:
+     - `total`: `number` - The total number of complementary colors to generate.
+     - `type`: `ComplimentaryType` - The type of complementary colors to generate.
+     - `output`: `ColorType` - The type of output color format. (Added)
 
-An enum defining the types of complimentary colors available for generation:
-- `SHADE`: Represents shades of the base color.
-- `TINT`: Represents tints of the base color.
-- `TONE`: Represents tones of the base color.
-- `HUE`: Represents hues derived from the base color.
+### Usage:
 
-### `ComplimentaryOptions`
+The usage example provided demonstrates how to use the utility functions and types:
 
-An interface defining options for generating complimentary colors:
-- `total`: `number` - The total number of complimentary colors to generate.
-- `type`: `ComplimentaryType` - The type of complimentary colors to generate.
+1. **Import**:
+   - Import the necessary functions and types from the module.
 
-## Usage:
+2. **Generate Complementary Colors**:
+   - Use the `getComplimentary` function to generate complementary colors based on a base color and options.
+   - The `options` parameter now includes an additional `output` property to specify the desired output color format.
 
-1. Import the necessary functions and types:
+Example usage:
 
-```typescript
+```js
 import { getComplimentary, ComplimentaryType, ComplimentaryOptions } from "@sil/color";
-```
 
-2. Use the `getComplimentary` function to generate complimentary colors:
-
-```typescript
 const baseColor = "#ff0000"; // Example base color (in hex format)
 const options: Partial<ComplimentaryOptions> = {
     total: 5, // Number of complimentary colors to generate
-    type: ComplimentaryType.TINT // Type of complimentary colors (TINT, SHADE, TONE, or HUE)
+    type: ComplimentaryType.TINT, // Type of complementary colors (TINT, SHADE, TONE, or HUE)
+    output: ColorType.RGB // Output color format (Added)
 };
 const complimentaryColors = getComplimentary(baseColor, options);
 ```
 
-3. Use the `complimentaryColors` array in your application as needed.
+3. **Usage in Application**:
+   - Use the generated array of complementary colors in your application as needed.
+
+This updated documentation reflects the addition of the `output` option for specifying the desired output color format when generating complementary colors.

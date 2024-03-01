@@ -1,5 +1,5 @@
-import { toRGB, toHSL } from "./to";
-import { COLOR, HSL, RGB } from "./types"
+import { toRGB, toHSL, toType } from "./to";
+import { COLOR, ColorType, HSL, RGB } from "./types"
 
 
 export const ComplimentaryType = {
@@ -12,11 +12,13 @@ export type ComplimentaryType = typeof ComplimentaryType[keyof typeof Compliment
 
 export interface ComplimentaryOptions {
     total: number,
-    type: ComplimentaryType
+    type: ComplimentaryType,
+    output: ColorType
 }
 const ComplimentaryDefaultOptions: ComplimentaryOptions = {
     total: 3,
-    type: 'tint'
+    type: 'tint',
+    output: ColorType.RGB
 }
 
 const getShades = (color: COLOR, total: number): RGB[] => {
@@ -94,18 +96,18 @@ export const getComplimentary = (color: COLOR, options: Partial<ComplimentaryOpt
 
     const { total, type } = opts;
 
+    let colors = [];
     switch (type) {
         case ComplimentaryType.SHADE:
-            return getShades(color, total);
+            colors = getShades(color, total);
         case ComplimentaryType.TINT:
-            return getTints(color, total);
+            colors =getTints(color, total);
         case ComplimentaryType.TONE:
-            return getTones(color, total);
+            colors = getTones(color, total);
         default:
         case ComplimentaryType.HUE:
-            return getHues(color, total);
+            colors = getHues(color, total);
     }
 
-
-
+    return colors.map((color)=>toType(color, opts.output));
 }
