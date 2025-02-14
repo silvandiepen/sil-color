@@ -4,6 +4,8 @@ import {
   getMinMaxRgb,
   getSaturation,
   getSaturationFromRgb,
+  getTrueLightness,
+  getTrueLightnessFromRgb,
 } from "./get";
 import { HSL, RGB, MinMax, COLOR } from "./types";
 
@@ -152,6 +154,42 @@ describe("Get the hue of an RGB value", () => {
 //     });
 //   });
 // });
+
+const getTrueLightnessFromRgbTests: { input: RGB; output: number }[] = [
+  { input: { r: 0, g: 0, b: 0 }, output: 0 }, // Black
+  { input: { r: 255, g: 255, b: 255 }, output: 100 }, // White
+  { input: { r: 255, g: 0, b: 0 }, output: 21 }, // Pure Red
+  { input: { r: 0, g: 255, b: 0 }, output: 72 }, // Pure Green
+  { input: { r: 0, g: 0, b: 255 }, output: 7 }, // Pure Blue
+  { input: { r: 127, g: 127, b: 127 }, output: 50 }, // Mid Gray
+  { input: { r: 255, g: 255, b: 0 }, output: 93 }, // Yellow
+];
+
+describe("Get the true lightness of an RGB value", () => {
+  getTrueLightnessFromRgbTests.forEach((value) => {
+    it("Should give the correct true lightness value", () => {
+      expect(getTrueLightnessFromRgb(value.input)).toEqual(value.output);
+    });
+  });
+});
+
+const getTrueLightnessTests: { input: COLOR; output: number }[] = [
+  { input: { r: 255, g: 255, b: 255 }, output: 100 }, // RGB White
+  { input: { r: 255, g: 0, b: 0, a: 1 }, output: 21 }, // RGBA Red
+  { input: { h: 0, s: 100, l: 50 }, output: 21 }, // HSL Red
+  { input: { h: 0, s: 100, l: 50, a: 1 }, output: 21 }, // HSLA Red
+  { input: "#FF0000", output: 21 }, // HEX Red
+  { input: "#00FF00", output: 72 }, // HEX Green
+  { input: "#0000FF", output: 7 }, // HEX Blue
+];
+
+describe("Get the true lightness of any color value", () => {
+  getTrueLightnessTests.forEach((value) => {
+    it("Should give the correct true lightness value", () => {
+      expect(getTrueLightness(value.input)).toEqual(value.output);
+    });
+  });
+});
 // const getBrightnessTests: {
 //   input: COLOR;
 //   roundness?: number;

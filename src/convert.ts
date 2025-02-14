@@ -1,5 +1,6 @@
 import { getHue, getLightness, getSaturation, componentToHex } from "./get";
-import type { HSL, RGB, HEX, CMYK, HSLA, RGBA, HSV, HSVA } from "./types";
+import { clamp, gammaToLinear, linearToGamma } from "./helpers";
+import type { HSL, RGB, HEX, CMYK, HSLA, RGBA, HSV, HSVA, LAB } from "./types";
 import { instanceOfRGB, instanceOfHSL } from "./types";
 
 
@@ -264,6 +265,44 @@ export const hsvToHsl = (hsv: HSV | HSVA): HSL | HSLA => {
   return hsl;
 };
 
+export const rgbToOklab = (rgb: RGB):LAB => {
+  // This is my undersanding: JavaScript canvas and many other virtual and literal devices use gamma-corrected (non-linear lightness) RGB, or sRGB. To convert sRGB values for manipulation in the Oklab color space, you must first convert them to linear RGB. Where Oklab interfaces with RGB it expects and returns linear RGB values. This next step converts (via a function) sRGB to linear RGB for Oklab to use:
+  const r = gammaToLinear(rgb.r / 255);
+  const g = gammaToLinear(rgb.g / 255);
+  const b = gammaToLinear(rgb.b / 255);
+  // This is the Oklab math:
+  var l = 0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b;
+  var m = 0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b;
+  var s = 0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b;
+  // Math.crb (cube root) here is the equivalent of the C++ cbrtf function here: https://bottosson.github.io/posts/oklab/#converting-from-linear-srgb-to-oklab
+  l = Math.cbrt(l); m = Math.cbrt(m); s = Math.cbrt(s);
+  return {
+    l: (l * +0.2104542553 + m * +0.7936177850 + s * -0.0040720468) as LAB['l'],
+    a: (l * +1.9779984951 + m * -2.4285922050 + s * +0.4505937099) as LAB['a'],
+    b: (l * +0.0259040371 + m * +0.7827717662 + s * -0.8086757660) as LAB['b'],
+  }
+}
+
+
+export const oklabToSRGB = (lab: LAB): RGB => {
+  let l = lab.l + lab.a * +0.3963377774 + lab.b * +0.2158037573;
+  let m = lab.l + lab.a * -0.1055613458 + lab.b * -0.0638541728;
+  let s = lab.l + lab.a * -0.0894841775 + lab.b * -1.2914855480;
+
+  l = l ** 3; m = m ** 3; s = s ** 3;
+
+  let r = l * +4.0767416621 + m * -3.3077115913 + s * +0.2309699292;
+  let g = l * -1.2684380046 + m * +2.6097574011 + s * -0.3413193965;
+  let b = l * -0.0041960863 + m * -0.7034186147 + s * +1.7076147010;
+
+  r = 255 * linearToGamma(r); g = 255 * linearToGamma(g); b = 255 * linearToGamma(b);
+  r = clamp(r, 0, 255); g = clamp(g, 0, 255); b = clamp(b, 0, 255);
+  r = Math.round(r); g = Math.round(g); b = Math.round(b);
+
+  return { r: r as RGB['r'], g: g as RGB['g'], b: b as RGB["b"] };
+}
+
+
 export const hexToHsv = (src: HEX): HSV | HSVA => rgbToHsv(hexToRgb(src));
 export const hslToHsv = (src: HSL): HSV | HSVA => rgbToHsv(hslToRgb(src));
 export const cmykToHsv = (src: CMYK): HSV | HSVA => rgbToHsv(cmykToRgb(src));
@@ -275,5 +314,11 @@ export const hslToCmyk = (src: HSL | HSLA): CMYK => rgbToCmyk(hslToRgb(src));
 export const hsvToHex = (src: HSV | HSVA): HEX => rgbToHex(hsvToRgb(src));
 export const hslToHex = (src: HSL | HSLA): HEX => rgbToHex(hslToRgb(src));
 export const cmykToHex = (src: CMYK): HEX => rgbToHex(cmykToRgb(src));
-
 export const cmykToHsl = (src: CMYK): HSL => rgbToHsl(cmykToRgb(src));
+
+
+export const hexToOklab = (src: HEX): LAB => rgbToOklab(hexToRgb(src));
+export const OklabToHex = (src: LAB): HEX => rgbToHex(oklabToSRGB(src));
+export const hslToOkLab = (src: HSL): LAB => rgbToOklab(hslToRgb(src));
+export const hsvToOklab = (src: HSV): LAB => rgbToOklab(hsvToRgb(src));
+export const cmykToOklab = (src: CMYK): LAB => rgbToOklab(cmykToRgb(src));

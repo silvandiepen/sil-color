@@ -35,7 +35,7 @@ export const rgbToY = (input: RGB | RGBA) => {
  *
  * @param Y Luminance, [0-1]
  */
-function YtoLstar(Y: number) {
+export function YtoLstar(Y: number) {
   // Send this function a luminance value between 0.0 and 1.0,
   // and it returns L* which is "perceptual lightness"
 
@@ -47,7 +47,25 @@ function YtoLstar(Y: number) {
   return Math.pow(Y, 1 / 3) * 116 - 16;
 }
 
-const isDefined = (value: any): boolean => typeof value !== undefined;
+
+/**
+ *
+ * Convert a linear color channel to gamma-encoded.
+ * @param c:number
+ * @returns number
+ */
+export const gammaToLinear = (c: number): number =>
+  c >= 0.04045 ? Math.pow((c + 0.055) / 1.055, 2.4) : c / 12.92;
+
+/**
+ * Convert a gamma-encoded color channel to linear.
+ * @param c:number
+ * @returns number
+ */
+export const linearToGamma = (c: number): number =>
+  c >= 0.0031308 ? 1.055 * Math.pow(c, 1 / 2.4) - 0.055 : 12.92 * c;
+
+export const isDefined = (value: any): boolean => typeof value !== undefined;
 
 export const minmax = (num: number, min = 0, max = 100) =>
   Math.min(Math.max(num, min), max);
@@ -67,3 +85,5 @@ export const randomBetween = (min: number, max: number): number => {
   if (min == max) return min;
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+export const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max);

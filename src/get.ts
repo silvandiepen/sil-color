@@ -75,7 +75,7 @@ export const hueToRgb = (p: number, q: number, t: number): number => {
 };
 
 /*
-  Get 
+  Get
 */
 
 export const getLightness = (value: COLOR): number => {
@@ -202,3 +202,36 @@ export const getBlue = (value: COLOR): number => {
 
 //   return Math.round(((hsp / 255) * 100) * round) / round;
 // };
+
+
+
+export const getTrueLightnessFromRgb = (rgb: RGB): number => {
+  let { r, g, b } = rgb;
+
+  // Normalize to range 0-1
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  // Apply luminance weights
+  const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+  return Math.round(L * 100); // Scale to 0-100%
+};
+
+export const getTrueLightness = (value: COLOR): number => {
+  switch (getType(value)) {
+    case ColorType.RGB:
+      return getTrueLightnessFromRgb(value as RGB);
+    case ColorType.RGBA:
+      return getTrueLightnessFromRgb({ r: (value as RGBA).r, g: (value as RGBA).g, b: (value as RGBA).b });
+    case ColorType.HSL:
+    case ColorType.HSLA:
+      return getTrueLightnessFromRgb(hslToRgb(value as HSL));
+    case ColorType.HEX:
+      return getTrueLightnessFromRgb(hexToRgb(value as HEX));
+    default:
+      console.warn(`${getType(value)} is not supported yet by getTrueLightness`);
+      return 0;
+  }
+};

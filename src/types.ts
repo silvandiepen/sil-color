@@ -1,12 +1,25 @@
-type NumberRange<T extends number> = number extends T ? number : _Range<T, []>;
-type _Range<T extends number, R extends unknown[]> = R["length"] extends T
-  ? R[number]
-  : _Range<T, [R["length"], ...R]>;
+// Helper type to create a range of numbers from `From` to `To`
+type _RangeFromTo<From extends number, To extends number, R extends unknown[]> =
+  R["length"] extends To
+    ? From | R[number]
+    : _RangeFromTo<From, To, [R["length"], ...R]>;
 
-export type Base16Number = NumberRange<256>;
+// Type for creating a range from `From` to `To`
+type NumberRange<From extends number, To extends number> =
+  From extends To
+    ? From
+    : _RangeFromTo<From, To, []>;
+
+
+
+export type Base16Number = NumberRange<0,256>;
 export type BinaryNumber = number; // TODO: Make this a FLOAT number between 0 and 1.
-export type PercentageNumber = NumberRange<101>;
-export type GradientNumber = NumberRange<361>;
+export type PercentageNumber = NumberRange<0,101>;
+export type GradientNumber = NumberRange<0,361>;
+export type SignedByte = NumberRange<-128, 127>; // -128 to 127
+
+
+
 
 /*
  * HEX
@@ -130,6 +143,21 @@ export function instanceOfCMYK(obj: any): obj is CMYK {
     Object.keys(obj).length == 4
   );
 }
+export interface LAB {
+  l: PercentageNumber;
+  a: SignedByte;
+  b: SignedByte
+}
+
+export function instanceOfLAB(obj: any): obj is LAB {
+  return (
+    "l" in obj &&
+    "a" in obj &&
+    "b" in obj &&
+    Object.keys(obj).length == 3
+  );
+}
+
 
 /*
  * MISC
@@ -157,3 +185,4 @@ export interface MinMax {
   min: BinaryNumber;
   max: BinaryNumber;
 }
+
