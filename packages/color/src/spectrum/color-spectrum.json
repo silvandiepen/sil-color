@@ -1,0 +1,252 @@
+{
+  "schema": {
+    "spectral": "true if definable by a single wavelength",
+    "wavelength_nm": "null or [min, max]",
+    "hue_deg": "one or more [min, max] ranges; wrap allowed e.g. [[350, 360], [0, 10]]",
+    "saturation": "[min, max] in 0–1",
+    "lightness": "[min, max] in 0–1",
+    "notes": "short guidance"
+  },
+  "colorsets": {
+    "red": {
+      "spectral": true,
+      "wavelength_nm": [620, 750],
+      "hue_deg": [[350, 360], [0, 10]],
+      "saturation": [0.65, 1.0],
+      "lightness": [0.35, 0.6],
+      "notes": "Long wavelengths; adjust lightness for scarlet vs deep red."
+    },
+    "green": {
+      "spectral": true,
+      "wavelength_nm": [495, 570],
+      "hue_deg": [[100, 140]],
+      "saturation": [0.6, 1.0],
+      "lightness": [0.35, 0.6],
+      "notes": "Mid-greens live around 120°."
+    },
+    "blue": {
+      "spectral": true,
+      "wavelength_nm": [450, 495],
+      "hue_deg": [[210, 240]],
+      "saturation": [0.6, 1.0],
+      "lightness": [0.35, 0.6],
+      "notes": "Shorter wavelengths than green."
+    },
+    "yellow": {
+      "spectral": true,
+      "wavelength_nm": [570, 590],
+      "hue_deg": [[50, 60]],
+      "saturation": [0.8, 1.0],
+      "lightness": [0.6, 0.8],
+      "notes": "Perceived bright; keep lightness higher for clean yellow."
+    },
+    "orange": {
+      "spectral": true,
+      "wavelength_nm": [590, 620],
+      "hue_deg": [[20, 40]],
+      "saturation": [0.7, 1.0],
+      "lightness": [0.45, 0.65],
+      "notes": "Straddles red–yellow; high saturation keeps it vivid."
+    },
+    "purple": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[270, 300]],
+      "saturation": [0.55, 1.0],
+      "lightness": [0.3, 0.55],
+      "notes": "Red–blue mixtures; not single-wavelength."
+    },
+    "brown": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[15, 50]],
+      "saturation": [0.4, 0.8],
+      "lightness": [0.2, 0.45],
+      "notes": "Dark, low-lightness oranges/yellows."
+    },
+    "maroon": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[350, 360], [0, 15]],
+      "saturation": [0.5, 0.9],
+      "lightness": [0.2, 0.4],
+      "notes": "Very dark red with low lightness."
+    },
+    "magenta": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[290, 320]],
+      "saturation": [0.7, 1.0],
+      "lightness": [0.4, 0.6],
+      "notes": "Non-spectral mix of red and blue."
+    },
+    "turquoise": {
+      "spectral": true,
+      "wavelength_nm": [485, 500],
+      "hue_deg": [[170, 190]],
+      "saturation": [0.6, 1.0],
+      "lightness": [0.4, 0.65],
+      "notes": "Blue-green, slightly more blue than cyan."
+    },
+    "crimson": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[348, 358]],
+      "saturation": [0.7, 1.0],
+      "lightness": [0.35, 0.55],
+      "notes": "Deep, slightly bluish red."
+    },
+    "pink": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[330, 360], [0, 10]],
+      "saturation": [0.3, 0.9],
+      "lightness": [0.7, 0.9],
+      "notes": "Light, desaturated reds."
+    },
+    "hotpink": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[330, 350]],
+      "saturation": [0.6, 1.0],
+      "lightness": [0.55, 0.75],
+      "notes": "Vivid, bright pink."
+    },
+    "coral": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[10, 25]],
+      "saturation": [0.6, 0.95],
+      "lightness": [0.5, 0.75],
+      "notes": "Pinkish-orange, warm and vibrant."
+    },
+    "gold": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[40, 55]],
+      "saturation": [0.7, 1.0],
+      "lightness": [0.5, 0.7],
+      "notes": "Rich, metallic yellow-orange."
+    },
+    "peach": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[5, 25]],
+      "saturation": [0.3, 0.7],
+      "lightness": [0.65, 0.85],
+      "notes": "Light, warm orange-pink."
+    },
+    "khaki": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[45, 65]],
+      "saturation": [0.2, 0.5],
+      "lightness": [0.5, 0.7],
+      "notes": "Dusty, yellowish-brown."
+    },
+    "lavender": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[270, 290]],
+      "saturation": [0.3, 0.7],
+      "lightness": [0.7, 0.85],
+      "notes": "Light, pale purple."
+    },
+    "indigo": {
+      "spectral": true,
+      "wavelength_nm": [425, 450],
+      "hue_deg": [[240, 260]],
+      "saturation": [0.6, 1.0],
+      "lightness": [0.25, 0.5],
+      "notes": "Deep blue-violet, between blue and violet."
+    },
+    "black": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[0, 360]],
+      "saturation": [0.0, 0.1],
+      "lightness": [0.0, 0.1],
+      "notes": "Low lightness."
+    },
+    "white": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[0, 360]],
+      "saturation": [0.0, 0.05],
+      "lightness": [0.95, 1.0],
+      "notes": "High lightness, near-zero saturation."
+    },
+    "gray": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[0, 360]],
+      "saturation": [0.0, 0.05],
+      "lightness": [0.2, 0.85],
+      "notes": "Mid lightness, near-zero saturation."
+    },
+    "lime": {
+      "spectral": true,
+      "wavelength_nm": [560, 570],
+      "hue_deg": [[75, 90]],
+      "saturation": [0.8, 1.0],
+      "lightness": [0.5, 0.7],
+      "notes": "Bright yellow-green."
+    },
+    "olive": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[60, 80]],
+      "saturation": [0.3, 0.6],
+      "lightness": [0.25, 0.45],
+      "notes": "Dark, yellowish-green."
+    },
+    "aquamarine": {
+      "spectral": true,
+      "wavelength_nm": [500, 520],
+      "hue_deg": [[160, 180]],
+      "saturation": [0.5, 0.9],
+      "lightness": [0.5, 0.75],
+      "notes": "Pale blue-green, clear and bright."
+    },
+    "teal": {
+      "spectral": true,
+      "wavelength_nm": [490, 510],
+      "hue_deg": [[170, 190]],
+      "saturation": [0.5, 0.9],
+      "lightness": [0.3, 0.55],
+      "notes": "Dark cyan, blue-green."
+    },
+    "skyblue": {
+      "spectral": true,
+      "wavelength_nm": [475, 485],
+      "hue_deg": [[190, 210]],
+      "saturation": [0.4, 0.8],
+      "lightness": [0.6, 0.8],
+      "notes": "Light, bright blue like clear sky."
+    },
+    "navy": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[220, 240]],
+      "saturation": [0.5, 1.0],
+      "lightness": [0.1, 0.3],
+      "notes": "Very dark blue."
+    },
+    "midnight": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[240, 255]],
+      "saturation": [0.4, 0.8],
+      "lightness": [0.05, 0.2],
+      "notes": "Extremely dark blue-black."
+    },
+    "tan": {
+      "spectral": false,
+      "wavelength_nm": null,
+      "hue_deg": [[25, 45]],
+      "saturation": [0.2, 0.5],
+      "lightness": [0.55, 0.75],
+      "notes": "Light, yellowish-brown."
+    }
+  }
+}

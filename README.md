@@ -1,200 +1,69 @@
-# Color
-
-Converting colors back and forth.
-
-## Convert Functions
-
-Direct conversion
-
-### hexToRgb
-
-inputType: `HEX`
-outputType: `RGB` | `RGBA`
-
-### hexToCmyk
-
-inputType: `HEX`
-outputType: `CMYK`
-
-### hexToHsl
-
-inputType: `HEX`
-outputType: `HSL` | `HSLA`
-
-### hexToHsv
-
-inputType: `HEX`
-outputType: `HSV` | `HSVA`
-
-### rgbToHsl
-
-inputType: `RGB` | `RGBA`
-outputType: `HSL` | `HSLA`
-
-### rgbToHex
-
-inputType: `RGB` | `RGBA`
-outputType: `HEX`
-
-### rgbToCmyk
-
-inputType: `RGB` | `RGBA`
-outputType: `CMYK`
-
-### rgbToHsv
-
-inputType: `RGB`
-outputType: `HSV` | `HSVA`
-
-### cmykToRgb
-
-inputType: `CMYK`
-outputType: `RGB` | `RGBA`
-
-### cmykToHex
-
-inputType: `CMYK`
-outputType: `HEX`
-
-### cmykToHsl
-
-inputType: `CMYK`
-outputType: `HSL` | `HSLA`
-
-### cmykToHsv
-
-inputType: `CMYK`
-outputType: `HSV` | `HSVA`
-
-### hslToHex
-
-inputType: `HSL` | `HSLA`
-outputType: `HEX`
-
-### hslToRgb
-
-inputType: `HSL` | `HSLA`
-outputType: `RGB` | `RGBA`
-
-### hslToCmyk
-
-inputType: `HSL` | `HSLA`
-outputType: `CMYK`
-
-### hslToHsv
-
-inputType: `HSL` | `HSLA`
-outputType: `HSV` | `HSVA`
-
-### hsvToHex
-
-inputType: `HSV` | `HSVA`
-outputType: `HEX`
-
-### hsvToRgb
-
-inputType: `HSV` | `HSVA`
-outputType: `RGB` | `RGBA`
-
-### hsvToCmyk
-
-inputType: `HSV` | `HSVA`
-outputType: `CMYK`
-
-### hsvToHsl
-
-inputType: `HSV` | `HSVA`
-outputType: `HSL` | `HSLA`
-
-## Convert Function - To
-
-Determine the type and based on that convert to the type requested
-
-### toHex
-
-inputType: `COLOR`
-outputType: `HEX`
-
-### toCMYK
-
-inputType: `COLOR`
-outputType: `HSV` | `HSVA`
-
-### toRGB
-
-inputType: `COLOR`
-outputType: `RGB` | `RGBA`
-
-### toHSL
-
-inputType: `COLOR`
-outputType: `HSL` | `HSLA`
-
-### toHSV
-
-inputType: `COLOR`
-outputType: `HSV` | `HSVA`
-
-## Manipulate
-
-### getType
-
-inputType: `COLOR`
-outputType: `ColorType`
-
-### setLightness
-
-inputType: COLOR
-outputType: Inherit from input
-
-### lighten
-
-inputType: COLOR
-outputType: Inherit from input
-
-### darken
-
-inputType: COLOR
-outputType: Inherit from input
-
-### mix
-
-inputType: COLOR
-outputType: Inherit from input
-
-## Types
-
-| type  |                        | example                     |
-| ----- | ---------------------- | --------------------------- |
-| HEX   | `string`               | `#000000`                   |
-| RGB   | r: `Base16Number`,     | `{ r: 0, g: 0, b: 0}`       |
-|       | g: `Base16Number`,     |
-|       | b: `Base16Number`      |                             |
-| RGBA  | r: `Base16Number`,     | `{ r: 0, g: 0, b: 0, a: 0}` |
-|       | g: `Base16Number`,     |                             |
-|       | b: `Base16Number`,     |                             |
-|       | a: `BinaryNumber`,     |                             |
-| HSL   | h: `GradientNumber`,   | `{ h: 0, s: 0, l: 0}`       |
-|       | s: `PercentageNumber`, |                             |
-|       | l: `PercentageNumber`, |                             |
-| HSLA  | h: `GradientNumber`,   | `{ h: 0, s: 0, l: 0}`       |
-|       | s: `PercentageNumber`, |                             |
-|       | l: `PercentageNumber`, |                             |
-|       | a: `BinaryNumber`,     |                             |
-| HSV   | h: `GradientNumber`,   | `{ h: 0, s: 0, l: 0}`       |
-|       | s: `PercentageNumber`, |                             |
-|       | v: `PercentageNumber`, |                             |
-| HSVA  | h: `GradientNumber`,   | `{ h: 0, s: 0, l: 0}`       |
-|       | s: `PercentageNumber`, |                             |
-|       | v: `PercentageNumber`, |                             |
-|       | a: `BinaryNumber`,     |                             |
-| CMYK  | c: `PercentageNumber`, | `{ c: 0, m: 0, y: 0, k: 0}` |
-|       | m: `PercentageNumber`, |                             |
-|       | y: `PercentageNumber`, |                             |
-|       | k: `PercentageNumber`, |                             |
-| COLOR |                        | any of the above            |
-
-`Base16Number`: Integer between 0 and 255
-`BinaryNumber`: Integer
-`PercentageNumber`: Integer between 0 and 100
-`GradientNumber`: Integer between 0 and 360
+# @sil/color
+
+Type-safe color conversion and utilities for TypeScript/JavaScript. Convert between HEX, RGB(A), HSL(A), HSV(A), and CMYK; manipulate colors; format as strings; compute brightness; find nearest named colors; and generate random colors.
+
+## Install
+
+```
+npm i @sil/color
+```
+
+## Quick Start
+
+```ts
+import {
+  hexToRgb, rgbToHsl, hslToHex,
+  toHex, toRGB, toHSL, toHSV, toCMYK,
+  lighten, darken, mix, getType,
+  toString, getHue, getLightness, getOpacity,
+  getBrightness, nearestColor, getName, getRandomColor,
+  ColorType, RGB, HSL
+} from '@sil/color';
+
+const rgb: RGB = hexToRgb('#ff0094');
+const hsl: HSL = rgbToHsl(rgb) as HSL;
+const hex: string = hslToHex(hsl);
+
+const lighter = lighten('#336699', 10);   // +10 lightness
+const label = toString(toRGB('#ff0'));    // "rgb(255, 255, 0)"
+const lstar = getBrightness('#333');      // perceived lightness 0–100
+const nearest = nearestColor('#f00', ['#111', '#f11', '#0f0']);
+const name = getName('#F0F8FF');          // "Alice Blue"
+const random = getRandomColor();          // e.g. "#12abef"
+```
+
+## Documentation
+
+- API docs: generate locally with `npm run docs` (output to `docs/`).
+
+## Examples
+
+- See `examples/basic.ts` for end-to-end usage.
+
+## Types (shapes)
+
+- `HEX`: `'#rrggbb'`
+- `RGB`: `{ r: 0–255, g: 0–255, b: 0–255 }`
+- `RGBA`: `RGB` + `{ a: 0–1 }`
+- `HSL`: `{ h: 0–360, s: 0–100, l: 0–100 }`
+- `HSLA`: `HSL` + `{ a: 0–1 }`
+- `HSV`: `{ h: 0–360, s: 0–100, v: 0–100 }`
+- `HSVA`: `HSV` + `{ a: 0–1 }`
+- `CMYK`: `{ c:0–100, m:0–100, y:0–100, k:0–100 }`
+- `COLOR`: any of the above
+
+## API Overview
+
+- Convert (direct): `hexToRgb`, `hexToHsl`, `hexToHsv`, `hexToCmyk`, `rgbToHex`, `rgbToHsl`, `rgbToHsv`, `rgbToCmyk`, `hslToRgb`, `hslToHex`, `hslToHsv`, `hslToCmyk`, `hsvToRgb`, `hsvToHex`, `hsvToHsl`, `hsvToCmyk`, `cmykToRgb`, `cmykToHex`, `cmykToHsl`, `cmykToHsv`.
+- Convert (to-helpers): `toHex`, `toRGB`, `toRGBA`, `toHSL`, `toHSLA`, `toHSV`, `toHSVA`, `toCMYK`, `toType(value, ColorType)`.
+- Manipulation: `getType`, `setLightness`, `setSaturation`, `setOpacity`, `lighten`, `darken`, `mix`, `textColor`.
+- Getters: `getHue`, `getSaturation`, `getLightness`, `getOpacity`, `getRed`, `getGreen`, `getBlue`.
+- Strings: `toRgbString`, `toHslString`, `toHsvString`, `toString`.
+- Validation: `isHex`, `isRGB`, `isRGBA`, `isHSL`, `isHSLA`, `isHSV`, `isHSVA`, `isCMYK`.
+- Brightness: `getBrightness` (perceived L* 0–100).
+- Names/Nearest: `getName(color)`, `nearestColor(color, colors)`.
+- Random: `getRandomColor(options?)`.
+
+Tips
+- All functions are pure and TypeScript-typed (`strict` mode).
+- Public API is exported from `src/index.ts`; tree-shake by importing what you need.
