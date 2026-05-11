@@ -24,7 +24,7 @@ export const toHsvString = (value: HSV | HSVA): string => {
   const v: HSVA = value as HSVA;
   return instanceOfHSVA(v)
     ? `hsva(${v.h}deg, ${v.s}%, ${v.v}%, ${v.a})`
-    : `hsv(${v["h"]}deg, ${v["s"]}%, ${v["l"]}%)`;
+    : `hsv(${v["h"]}deg, ${v["s"]}%, ${v["v"]}%)`;
 };
 
 

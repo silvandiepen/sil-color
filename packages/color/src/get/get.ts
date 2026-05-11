@@ -173,7 +173,7 @@ export const getGreen = (value: COLOR): number => {
     case ColorType.HEX:
       return hexToRgb(value as HEX).g;
     default:
-      console.warn(`${getType(value)} is not supported yet by getRed`);
+      console.warn(`${getType(value)} is not supported yet by getGreen`);
       return 0;
   }
 };
@@ -188,20 +188,10 @@ export const getBlue = (value: COLOR): number => {
     case ColorType.HEX:
       return hexToRgb(value as HEX).b;
     default:
-      console.warn(`${getType(value)} is not supported yet by getRed`);
+      console.warn(`${getType(value)} is not supported yet by getBlue`);
       return 0;
   }
 };
-
-// // http://alienryderflex.com/hsp.html
-// export const getBrightness = (value: COLOR, round = 100): number => {
-//   const { r, g, b } = toRGB(value);
-
-//   const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
-
-//   return Math.round(((hsp / 255) * 100) * round) / round;
-// };
-
 
 
 export const getTrueLightnessFromRgb = (rgb: RGB): number => {

@@ -159,15 +159,15 @@ export const generatePalette = (options: PaletteOptions): GeneratedPalette => {
 
     // If a lead base is defined, use its S/L for all chromatic colors
     const anchor = lead.hsl ?? baseHsl;
-    let s: number = (anchor.s as unknown as number);
-    let l: number = (anchor.l as unknown as number);
+    let s: number = anchor.s;
+    let l: number = anchor.l;
     if (strategy === "relative-sl") {
       const { fs, fl } = deriveRelativeFactors(nameHsl);
       s = clamp(baseHsl.s * fs, 0, 100);
       l = clamp(baseHsl.l * fl, 0, 100);
     }
 
-    const generatedHex = toHex({ h: nameHsl.h, s: s as any, l: l as any });
+    const generatedHex = toHex({ h: nameHsl.h, s: s as HSL['s'], l: l as HSL['l'] });
     result[name] = generatedHex;
     usedBaseFor[name] = lead.name ?? baseName;
   }

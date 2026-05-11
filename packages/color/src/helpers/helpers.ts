@@ -65,7 +65,7 @@ export const gammaToLinear = (c: number): number =>
 export const linearToGamma = (c: number): number =>
   c >= 0.0031308 ? 1.055 * Math.pow(c, 1 / 2.4) - 0.055 : 12.92 * c;
 
-export const isDefined = (value: any): boolean => typeof value !== undefined;
+export const isDefined = (value: unknown): boolean => value !== undefined;
 
 export const minmax = (num: number, min = 0, max = 100) =>
   Math.min(Math.max(num, min), max);
@@ -76,7 +76,7 @@ export const isBetween = (val: number, min: number, max: number): boolean =>
 export const areBetween = (vals: number[], min: number, max: number): boolean =>
   !vals.find((v: number) => !isBetween(v, min, max));
 
-export const shift = (value: any[]): any[] => {
+export const shift = (value: number[]): number[] => {
   value.shift();
   return isDefined(value) ? value : [];
 };

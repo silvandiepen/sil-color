@@ -11,3 +11,4 @@ export * from "./nearest/nearest";
 export * from "./random/random";
 export * from "./complimentary/complimentary";
 export * from "./palette/palette";
+export * from "./object/object";

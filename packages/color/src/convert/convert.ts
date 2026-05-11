@@ -89,12 +89,10 @@ export const rgbToCmyk = (rgb: RGB | RGBA): CMYK => {
   m = (m - k) / (1 - k);
   y = (y - k) / (1 - k);
 
-  // if(!normalized){
   c = Math.round(c * 100);
   m = Math.round(m * 100);
   y = Math.round(y * 100);
   k = Math.round(k * 100);
-  // }
 
   c = isNaN(c) ? 0 : c;
   m = isNaN(m) ? 0 : m;

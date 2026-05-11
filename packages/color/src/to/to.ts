@@ -84,7 +84,6 @@ export const toHSL = (color: COLOR): HSL | HSLA => {
     if (isHSL(color as string)) return toHslObject(color);
     if (isHSLA(color as string)) return toHslObject(color);
     if (isHSV(color as string)) return hsvToHsl(toHsvObject(color));
-    if (isHSV(color as string)) return hsvToHsl(toHsvObject(color));
     if (isHSVA(color as string)) return hsvToHsl(toHsvObject(color));
     if (isCMYK(color as string)) return cmykToHsl(toCmykObject(color));
   } else if (instanceOfRGB(color) || instanceOfRGBA(color)) {

@@ -2,6 +2,8 @@ import { areBetween, getNumbers, isBetween, shift } from "../helpers/helpers";
 import {
   instanceOfHSL,
   instanceOfHSLA,
+  instanceOfHSV,
+  instanceOfHSVA,
   instanceOfRGB,
   instanceOfRGBA,
   instanceOfCMYK,
@@ -86,7 +88,7 @@ export const isHSLA = (value: string): boolean => {
   );
 };
 export const isHSV = (value: string): boolean => {
-  if (typeof value !== "string" && instanceOfHSL(value)) return true;
+  if (typeof value !== "string" && instanceOfHSV(value)) return true;
   if (typeof value !== "string") return false;
 
   const hslNumbers = getNumbers(value);
@@ -102,7 +104,7 @@ export const isHSV = (value: string): boolean => {
 };
 
 export const isHSVA = (value: string): boolean => {
-  if (typeof value !== "string" && instanceOfHSLA(value)) return true;
+  if (typeof value !== "string" && instanceOfHSVA(value)) return true;
   if (typeof value !== "string") return false;
 
   const hslNumbers = getNumbers(value);
@@ -132,14 +134,16 @@ export const isCMYK = (value: string): boolean => {
   );
 };
 
-export const isCOLOR = (value: any): boolean => {
+export const isCOLOR = (value: unknown): boolean => {
+  const v = value as string;
   return (
-    isHex(value) ||
-    isHSL(value) ||
-    isHSLA(value) ||
-    isRGB(value) ||
-    isRGBA(value) ||
-    isHSV(value) ||
-    isHSVA(value)
+    isHex(v) ||
+    isHSL(v) ||
+    isHSLA(v) ||
+    isRGB(v) ||
+    isRGBA(v) ||
+    isHSV(v) ||
+    isHSVA(v) ||
+    isCMYK(v)
   );
 };
