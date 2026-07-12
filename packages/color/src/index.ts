@@ -5,6 +5,7 @@ export * from "./get/get";
 export * from "./string/string";
 export * from "./manipulate/manipulate"
 export * from "./brightness/brightness";
+export * from "./contrast/contrast";
 export * from "./names/names";
 export * from "./types/types";
 export * from "./nearest/nearest";
