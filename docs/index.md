@@ -59,6 +59,7 @@ const random   = getRandomColor();            // e.g. "#12abef"
 - [Is (validation)](./functions/is.md)
 - [String](./functions/string.md)
 - [Brightness](./functions/brightness.md)
+- [Contrast](./functions/contrast.md)
 - [Names](./functions/names.md)
 - [Nearest](./functions/nearest.md)
 - [Random](./functions/random.md)

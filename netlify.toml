@@ -1,0 +1,7 @@
+[build]
+  base = "docs"
+  command = "npx girky"
+  publish = "public"
+
+[build.environment]
+  NODE_VERSION = "22"
